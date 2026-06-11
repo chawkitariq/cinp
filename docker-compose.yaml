@@ -1,0 +1,14 @@
+services:
+  db:
+    image: "postgres:18.4"
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: cinp
+      POSTGRES_PASSWORD: cinp
+      POSTGRES_DB: cinp
+    volumes:
+      - dbdata:/var/lib/postgresql
+
+volumes:
+  dbdata:
