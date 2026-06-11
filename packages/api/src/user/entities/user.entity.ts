@@ -1,6 +1,7 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from "typeorm";
 
-@Entity()
+@Entity({ name: 'users' })
+@Unique(['email'])
 export class User {
     @PrimaryGeneratedColumn('uuid')
     id: string
@@ -11,8 +12,8 @@ export class User {
     @Column()
     password: string
 
-    @Column()
-    isCandidate: boolean
+    @Column({ name: 'is_recruiter', default: false })
+    isRecruiter: boolean
 
     @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })
     createdAt: Date
