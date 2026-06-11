@@ -9,4 +9,4 @@ import { Submission } from './entities/submission.entity';
   controllers: [SubmissionController],
   providers: [SubmissionService],
 })
-export class SubmissionModule { }
+export class SubmissionModule {}

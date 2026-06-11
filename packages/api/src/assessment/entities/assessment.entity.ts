@@ -1,47 +1,59 @@
-import { AssessmentSession } from "src/assessment-session/entities/assessment-session.entity"
-import { User } from "src/user/entities/user.entity"
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm"
-import { AssessmentProblem } from "./assessment-problem.entity"
-
+import { AssessmentSession } from 'src/assessment-session/entities/assessment-session.entity';
+import { User } from 'src/user/entities/user.entity';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { AssessmentProblem } from './assessment-problem.entity';
 
 enum AssessmentStatus {
-    DRAFT,
-    ACTIVE,
-    CLOSED,
+  DRAFT,
+  ACTIVE,
+  CLOSED,
 }
 
 @Entity({ name: 'assessments' })
 export class Assessment {
-    @PrimaryGeneratedColumn('uuid')
-    id: string
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-    @Column()
-    title: string
+  @Column()
+  title: string;
 
-    @Column()
-    description?: string
+  @Column()
+  description?: string;
 
-    @Column({ name: 'duration_min' })
-    durationMin: number
+  @Column({ name: 'duration_min' })
+  durationMin: number;
 
-    @Column({ enum: AssessmentStatus, default: AssessmentStatus.DRAFT })
-    status: AssessmentStatus
+  @Column({ enum: AssessmentStatus, default: AssessmentStatus.DRAFT })
+  status: AssessmentStatus;
 
-    @Column({ name: 'created_by_id' })
-    createdById: string
+  @Column({ name: 'created_by_id' })
+  createdById: string;
 
-    @OneToMany(() => User, user => user.id)
-    createdBy: User
+  @OneToMany(() => User, (user) => user.id)
+  createdBy: User;
 
-    @OneToMany(() => AssessmentProblem, assessmentProblem => assessmentProblem.assessmentId)
-    problems: AssessmentProblem[]
+  @OneToMany(
+    () => AssessmentProblem,
+    (assessmentProblem) => assessmentProblem.assessmentId,
+  )
+  problems: AssessmentProblem[];
 
-    @OneToMany(() => AssessmentSession, assessmentSession => assessmentSession.assessmentId)
-    sessions: AssessmentSession[]
+  @OneToMany(
+    () => AssessmentSession,
+    (assessmentSession) => assessmentSession.assessmentId,
+  )
+  sessions: AssessmentSession[];
 
-    @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })
-    createdAt: Date
+  @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })
+  createdAt: Date;
 
-    @UpdateDateColumn({ name: 'updated_at', type: 'timestamptz' })
-    updatedAt: Date
+  @UpdateDateColumn({ name: 'updated_at', type: 'timestamptz' })
+  updatedAt: Date;
 }

@@ -9,7 +9,14 @@ import { AssessmentSessionModule } from './assessment-session/assessment-session
 import { SubmissionModule } from './submission/submission.module';
 
 @Module({
-  imports: [DatabaseModule, UserModule, ProblemModule, AssessmentModule, AssessmentSessionModule, SubmissionModule],
+  imports: [
+    DatabaseModule,
+    UserModule,
+    ProblemModule,
+    AssessmentModule,
+    AssessmentSessionModule,
+    SubmissionModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

@@ -1,58 +1,66 @@
-import { Assessment } from "src/assessment/entities/assessment.entity"
-import { Submission } from "src/submission/entities/submission.entity"
-import { User } from "src/user/entities/user.entity"
-import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from "typeorm"
+import { Assessment } from 'src/assessment/entities/assessment.entity';
+import { Submission } from 'src/submission/entities/submission.entity';
+import { User } from 'src/user/entities/user.entity';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  Unique,
+  UpdateDateColumn,
+} from 'typeorm';
 
 enum SessionStatus {
-    INVITED,
-    IN_PROGRESS,
-    COMPLETED,
-    EXPIRED,
+  INVITED,
+  IN_PROGRESS,
+  COMPLETED,
+  EXPIRED,
 }
 
-
-@Entity({name: 'assessment_sessions'})
+@Entity({ name: 'assessment_sessions' })
 @Unique(['token'])
 export class AssessmentSession {
-    @PrimaryGeneratedColumn('uuid')
-    id: string
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-    @Column()
-    token: string
+  @Column()
+  token: string;
 
-    @Column({name: 'candidate_id'})
-    candidateId: string
+  @Column({ name: 'candidate_id' })
+  candidateId: string;
 
-    @Column({name: 'assessment_id'})
-    assessmentId: string
-    
-    @Column({ enum: SessionStatus, default: SessionStatus.INVITED })
-    status: SessionStatus
+  @Column({ name: 'assessment_id' })
+  assessmentId: string;
 
-    @Column({name: 'started_at', type: 'timestamptz', nullable: true})
-    startedAt?: Date
+  @Column({ enum: SessionStatus, default: SessionStatus.INVITED })
+  status: SessionStatus;
 
-    @Column({name: 'expires_at', type: 'timestamptz', nullable: true})
-    expiresAt?: Date
+  @Column({ name: 'started_at', type: 'timestamptz', nullable: true })
+  startedAt?: Date;
 
-    @Column({name: 'finished_at', type: 'timestamptz', nullable: true})
-    finishedAt?: Date
+  @Column({ name: 'expires_at', type: 'timestamptz', nullable: true })
+  expiresAt?: Date;
 
-    @Column()
-    totalScore: number
+  @Column({ name: 'finished_at', type: 'timestamptz', nullable: true })
+  finishedAt?: Date;
 
-    @ManyToOne(() => User, (user) => user.id)
-    candidate: User
+  @Column({ default: 0 })
+  totalScore: number;
 
-    @ManyToOne(() => Assessment, (assessment) => assessment.id)
-    assessment: Assessment
+  @ManyToOne(() => User, (user) => user.id)
+  candidate: User;
 
-    @OneToMany(() => Submission, submission => submission.sessionId)
-    submissions: Submission[]
+  @ManyToOne(() => Assessment, (assessment) => assessment.id)
+  assessment: Assessment;
 
-    @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })
-    createdAt: Date
+  @OneToMany(() => Submission, (submission) => submission.sessionId)
+  submissions: Submission[];
 
-    @UpdateDateColumn({ name: 'updated_at', type: 'timestamptz' })
-    updatedAt: Date
+  @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ name: 'updated_at', type: 'timestamptz' })
+  updatedAt: Date;
 }
