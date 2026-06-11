@@ -1,0 +1,4 @@
+interface:
+  display_name: "API Coding Practices"
+  short_description: "NestJS API rules for this project"
+  default_prompt: "Use $api-coding-practices to implement or review packages/api code against the project conventions."
