@@ -28,7 +28,7 @@ export class Problem {
   @Column()
   slug: string;
 
-  @Column()
+  @Column({ enum: Difficulty, default: Difficulty.EASY })
   difficulty: Difficulty;
 
   @Column()
