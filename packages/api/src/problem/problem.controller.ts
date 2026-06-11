@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { ProblemService } from './problem.service';
 import { CreateProblemDto } from './dto/create-problem.dto';
@@ -26,17 +27,20 @@ export class ProblemController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.problemService.findOne(+id);
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
+    return this.problemService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProblemDto: UpdateProblemDto) {
-    return this.problemService.update(+id, updateProblemDto);
+  update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateProblemDto: UpdateProblemDto,
+  ) {
+    return this.problemService.update(id, updateProblemDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.problemService.remove(+id);
+  remove(@Param('id', ParseUUIDPipe) id: string) {
+    return this.problemService.remove(id);
   }
 }

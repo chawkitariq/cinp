@@ -10,10 +10,10 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-enum Difficulty {
-  EASY,
-  MEDIUM,
-  HARD,
+export enum Difficulty {
+  EASY = 'easy',
+  MEDIUM = 'medium',
+  HARD = 'hard',
 }
 
 @Entity({ name: 'problems' })
@@ -28,27 +28,24 @@ export class Problem {
   @Column()
   slug: string;
 
-  @Column({ enum: Difficulty, default: Difficulty.EASY })
+  @Column({ type: 'enum', enum: Difficulty, default: Difficulty.EASY })
   difficulty: Difficulty;
 
   @Column()
   description: string;
 
-  @Column({ type: 'json' })
-  examples?: string;
+  @Column({ type: 'json', nullable: true })
+  examples?: Record<string, unknown>[];
 
-  @Column()
+  @Column({ nullable: true })
   constraints?: string;
 
-  @Column({ name: 'starter_code' })
+  @Column({ name: 'starter_code', nullable: true })
   starterCode?: string;
-
-  // @OneToMany(() => AssessmentSession)
-  // testCases: TestCase[]
 
   @OneToMany(
     () => AssessmentProblem,
-    (assessmentProblem) => assessmentProblem.problemId,
+    (assessmentProblem) => assessmentProblem.problem,
   )
   assessments: AssessmentProblem[];
 

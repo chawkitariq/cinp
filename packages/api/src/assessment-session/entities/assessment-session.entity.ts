@@ -5,6 +5,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -12,11 +13,11 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-enum SessionStatus {
-  INVITED,
-  IN_PROGRESS,
-  COMPLETED,
-  EXPIRED,
+export enum SessionStatus {
+  INVITED = 'invited',
+  IN_PROGRESS = 'in_progress',
+  COMPLETED = 'completed',
+  EXPIRED = 'expired',
 }
 
 @Entity({ name: 'assessment_sessions' })
@@ -34,7 +35,7 @@ export class AssessmentSession {
   @Column({ name: 'assessment_id' })
   assessmentId: string;
 
-  @Column({ enum: SessionStatus, default: SessionStatus.INVITED })
+  @Column({ type: 'enum', enum: SessionStatus, default: SessionStatus.INVITED })
   status: SessionStatus;
 
   @Column({ name: 'started_at', type: 'timestamptz', nullable: true })
@@ -46,16 +47,18 @@ export class AssessmentSession {
   @Column({ name: 'finished_at', type: 'timestamptz', nullable: true })
   finishedAt?: Date;
 
-  @Column({ default: 0 })
+  @Column({ name: 'total_score', default: 0 })
   totalScore: number;
 
-  @ManyToOne(() => User, (user) => user.id)
+  @ManyToOne(() => User, (user) => user.assessmentSessions)
+  @JoinColumn({ name: 'candidate_id' })
   candidate: User;
 
-  @ManyToOne(() => Assessment, (assessment) => assessment.id)
+  @ManyToOne(() => Assessment, (assessment) => assessment.sessions)
+  @JoinColumn({ name: 'assessment_id' })
   assessment: Assessment;
 
-  @OneToMany(() => Submission, (submission) => submission.sessionId)
+  @OneToMany(() => Submission, (submission) => submission.session)
   submissions: Submission[];
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })

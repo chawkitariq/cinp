@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { SubmissionService } from './submission.service';
 import { CreateSubmissionDto } from './dto/create-submission.dto';
@@ -26,20 +27,20 @@ export class SubmissionController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.submissionService.findOne(+id);
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
+    return this.submissionService.findOne(id);
   }
 
   @Patch(':id')
   update(
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() updateSubmissionDto: UpdateSubmissionDto,
   ) {
-    return this.submissionService.update(+id, updateSubmissionDto);
+    return this.submissionService.update(id, updateSubmissionDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.submissionService.remove(+id);
+  remove(@Param('id', ParseUUIDPipe) id: string) {
+    return this.submissionService.remove(id);
   }
 }

@@ -2,7 +2,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { join } from 'path';
 import { DataSource } from 'typeorm';
 
-ConfigModule.forRoot();
+void ConfigModule.forRoot();
 
 const configService = new ConfigService();
 

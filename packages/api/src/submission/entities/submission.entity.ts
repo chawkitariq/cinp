@@ -3,17 +3,18 @@ import { Problem } from 'src/problem/entities/problem.entity';
 import {
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
-enum SubmissionStatus {
-  PENDING,
-  RUNNING,
-  PASSED,
-  FAILED,
-  ERROR,
+export enum SubmissionStatus {
+  PENDING = 'pending',
+  RUNNING = 'running',
+  PASSED = 'passed',
+  FAILED = 'failed',
+  ERROR = 'error',
 }
 
 @Entity({ name: 'submissions' })
@@ -21,37 +22,43 @@ export class Submission {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ name: 'session_id' })
   sessionId: string;
 
-  @Column()
+  @Column({ name: 'problem_id' })
   problemId: string;
 
   @Column()
   language: string;
 
-  @Column()
+  @Column({ type: 'text' })
   code: string;
 
-  @Column({ enum: SubmissionStatus, default: SubmissionStatus.PENDING })
+  @Column({
+    type: 'enum',
+    enum: SubmissionStatus,
+    default: SubmissionStatus.PENDING,
+  })
   status: SubmissionStatus;
 
   @Column({ default: 0 })
   score: number;
 
-  @Column({ default: 0 })
+  @Column({ name: 'passed_tests', default: 0 })
   passedTests: number;
 
-  @Column({ default: 0 })
+  @Column({ name: 'total_tests', default: 0 })
   totalTests: number;
 
-  @Column({ nullable: true })
+  @Column({ name: 'runtime_ms', nullable: true })
   runtimeMs?: number;
 
-  @ManyToOne(() => AssessmentSession)
+  @ManyToOne(() => AssessmentSession, (session) => session.submissions)
+  @JoinColumn({ name: 'session_id' })
   session: AssessmentSession;
 
-  @ManyToOne(() => Problem)
+  @ManyToOne(() => Problem, (problem) => problem.submissions)
+  @JoinColumn({ name: 'problem_id' })
   problem: Problem;
 
   @Column({

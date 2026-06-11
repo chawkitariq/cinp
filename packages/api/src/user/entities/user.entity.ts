@@ -3,10 +3,13 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   Unique,
   UpdateDateColumn,
 } from 'typeorm';
+import { AssessmentSession } from 'src/assessment-session/entities/assessment-session.entity';
+import { Assessment } from 'src/assessment/entities/assessment.entity';
 
 @Entity({ name: 'users' })
 @Unique(['email'])
@@ -22,6 +25,12 @@ export class User {
 
   @Column({ name: 'is_recruiter', default: false })
   isRecruiter: boolean;
+
+  @OneToMany(() => Assessment, (assessment) => assessment.createdBy)
+  createdAssessments: Assessment[];
+
+  @OneToMany(() => AssessmentSession, (session) => session.candidate)
+  assessmentSessions: AssessmentSession[];
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })
   createdAt: Date;

@@ -1,4 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { Problem } from './entities/problem.entity';
 import { ProblemService } from './problem.service';
 
 describe('ProblemService', () => {
@@ -6,7 +8,13 @@ describe('ProblemService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [ProblemService],
+      providers: [
+        ProblemService,
+        {
+          provide: getRepositoryToken(Problem),
+          useValue: {},
+        },
+      ],
     }).compile();
 
     service = module.get<ProblemService>(ProblemService);

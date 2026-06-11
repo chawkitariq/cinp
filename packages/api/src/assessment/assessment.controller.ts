@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { AssessmentService } from './assessment.service';
 import { CreateAssessmentDto } from './dto/create-assessment.dto';
@@ -26,20 +27,20 @@ export class AssessmentController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.assessmentService.findOne(+id);
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
+    return this.assessmentService.findOne(id);
   }
 
   @Patch(':id')
   update(
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() updateAssessmentDto: UpdateAssessmentDto,
   ) {
-    return this.assessmentService.update(+id, updateAssessmentDto);
+    return this.assessmentService.update(id, updateAssessmentDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.assessmentService.remove(+id);
+  remove(@Param('id', ParseUUIDPipe) id: string) {
+    return this.assessmentService.remove(id);
   }
 }

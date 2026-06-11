@@ -4,16 +4,18 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { AssessmentProblem } from './assessment-problem.entity';
 
-enum AssessmentStatus {
-  DRAFT,
-  ACTIVE,
-  CLOSED,
+export enum AssessmentStatus {
+  DRAFT = 'draft',
+  ACTIVE = 'active',
+  CLOSED = 'closed',
 }
 
 @Entity({ name: 'assessments' })
@@ -24,30 +26,35 @@ export class Assessment {
   @Column()
   title: string;
 
-  @Column()
+  @Column({ nullable: true })
   description?: string;
 
   @Column({ name: 'duration_min' })
   durationMin: number;
 
-  @Column({ enum: AssessmentStatus, default: AssessmentStatus.DRAFT })
+  @Column({
+    type: 'enum',
+    enum: AssessmentStatus,
+    default: AssessmentStatus.DRAFT,
+  })
   status: AssessmentStatus;
 
   @Column({ name: 'created_by_id' })
   createdById: string;
 
-  @OneToMany(() => User, (user) => user.id)
+  @ManyToOne(() => User, (user) => user.createdAssessments)
+  @JoinColumn({ name: 'created_by_id' })
   createdBy: User;
 
   @OneToMany(
     () => AssessmentProblem,
-    (assessmentProblem) => assessmentProblem.assessmentId,
+    (assessmentProblem) => assessmentProblem.assessment,
   )
   problems: AssessmentProblem[];
 
   @OneToMany(
     () => AssessmentSession,
-    (assessmentSession) => assessmentSession.assessmentId,
+    (assessmentSession) => assessmentSession.assessment,
   )
   sessions: AssessmentSession[];
 
