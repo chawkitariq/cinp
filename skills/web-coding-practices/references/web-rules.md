@@ -42,6 +42,7 @@ Use these rules as the detailed reference for `skills/web-coding-practices/SKILL
 - Follow existing composition patterns such as `Button asChild` with `next/link`.
 - Keep reusable components focused on UI behavior and presentation; push data fetching and domain shaping up to the route level unless a shared component clearly owns it.
 - Keep accessibility intact: preserve labels, descriptions, `aria-invalid`, and keyboard-friendly controls.
+- Add JSDoc to exported reusable components when their composition contract, accessibility responsibility, data expectations, or side effects are not obvious from props alone.
 
 ## Hooks, Utils, And Constants
 
@@ -58,12 +59,18 @@ Use these rules as the detailed reference for `skills/web-coding-practices/SKILL
   - deterministic data shaping used in multiple files.
 - Keep constants in `constants/` for repeated fixed values, environment-derived URLs, or app-wide configuration values such as `API_BASE_URL`.
 - Do not move logic into `utils/` or `hooks/` just to make a page file shorter. Reuse should be real, not speculative.
+- Add JSDoc when creating or changing reusable hooks, utils, and constants:
+  - hooks: describe the reusable behavior, browser/API assumptions, lifecycle effects, and returned API;
+  - utils: describe domain intent, important edge cases, units, parsing/formatting rules, and error behavior;
+  - constants: describe source, environment dependency, units, or product meaning when the value is not self-evident.
+- Keep JSDoc directly above the exported declaration. Page-local helpers only need JSDoc when they carry non-obvious domain rules.
 
 ## Data And Shared Contracts
 
 - Follow `skills/project-coding-practices/references/common-rules.md` for shared-contract ownership, package boundaries, and no-duplication rules.
 - Import shared types from `@cinp/api`, preferably with `import type`.
 - Keep API endpoint base values centralized in `constants/api.ts` instead of scattering literals across routes.
+- Add or update JSDoc for frontend data mappers, read models, and API-facing helper functions whenever they encode serialization differences, fallback behavior, or assumptions about `@cinp/api` contracts.
 
 ## Forms And Client Logic
 

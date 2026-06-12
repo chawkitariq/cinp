@@ -30,6 +30,7 @@ Composition patterns for building flexible, maintainable React components. Avoid
 3. [Implementation Patterns](#3-implementation-patterns) — **MEDIUM**
    - 3.1 [Create Explicit Component Variants](#31-create-explicit-component-variants)
    - 3.2 [Prefer Composing Children Over Render Props](#32-prefer-composing-children-over-render-props)
+   - 3.3 [Document Reusable Composition Utilities](#33-document-reusable-composition-utilities)
 4. [React 19 APIs](#4-react-19-apis) — **MEDIUM**
    - 4.1 [React 19 API Changes](#41-react-19-api-changes)
 
@@ -890,6 +891,40 @@ return (
 Use render props when the parent needs to provide data or state to the child.
 
 Use children when composing static structure.
+
+### 3.3 Document Reusable Composition Utilities
+
+**Impact: MEDIUM (keeps reusable APIs understandable as composition grows)**
+
+When adding or changing reusable composition code, add or update concise JSDoc
+at the declaration site. This applies to exported compound component parts,
+provider components, context value interfaces, custom hooks, utility functions,
+constants, and shared types that other files are expected to consume.
+
+Document what the API is for and any non-obvious contract: required provider
+boundary, side effects, lifecycle assumptions, accessibility responsibility,
+state/action semantics, units, error behavior, or constraints that the type
+signature alone does not explain.
+
+**Correct: reusable utility documents the composition contract**
+
+```tsx
+/**
+ * Reads the composer context and fails when used outside Composer.Provider.
+ */
+function useComposer() {
+  const value = use(ComposerContext)
+
+  if (!value) {
+    throw new Error('useComposer must be used within Composer.Provider')
+  }
+
+  return value
+}
+```
+
+Do not add JSDoc to every local render callback or obvious one-off component.
+Prefer clearer names when a comment would only repeat the code.
 
 ---
 

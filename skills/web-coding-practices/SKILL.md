@@ -16,9 +16,10 @@ Apply the coding rules established by the current `packages/web` codebase. Treat
 3. Keep App Router files in `app/`; prefer server components by default and add `"use client"` only when hooks, browser APIs, or client-side mutations are required.
 4. Reuse `components/ui` and `lib/utils.ts` before creating new local primitives.
 5. Put reusable browser or stateful logic in `hooks/`, pure stateless helpers in `utils/`, and static config values in `constants/`.
-6. Keep page-specific helpers inside the route file unless they are clearly reusable across multiple screens.
-7. Preserve the Tailwind v4 and shadcn setup in `app/globals.css` and `components.json`; do not introduce a parallel styling system.
-8. Run focused verification with `pnpm --filter web lint`, and add `pnpm --filter web build` when the change touches routes, shared contracts, rendering boundaries, or framework configuration.
+6. Add or update JSDoc for reusable hooks, utilities, constants, exported components, shared types, data mappers, and API-facing helpers.
+7. Keep page-specific helpers inside the route file unless they are clearly reusable across multiple screens.
+8. Preserve the Tailwind v4 and shadcn setup in `app/globals.css` and `components.json`; do not introduce a parallel styling system.
+9. Run focused verification with `pnpm --filter web lint`, and add `pnpm --filter web build` when the change touches routes, shared contracts, rendering boundaries, or framework configuration.
 
 ## Load Detailed Rules
 
@@ -40,4 +41,4 @@ Also read `../project-coding-practices/references/common-rules.md` when the web 
 - Do not add `"use client"` to an App Router file unless the component genuinely needs client behavior.
 - Do not add new design systems, icon packs, or CSS conventions when the existing shadcn and Tailwind setup already covers the need.
 - Do not bypass `constants/` for repeated environment-derived URLs or fixed config values.
-- Keep comments and JSDoc rare, short, and in English when they add real value.
+- Keep JSDoc short and in English; document reusable frontend APIs and contracts without restating obvious prop or return types.

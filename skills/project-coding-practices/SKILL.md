@@ -16,11 +16,12 @@ Apply the repository-wide coding practices that are common to both API and web w
 3. Keep package boundaries explicit. Use public workspace package exports instead of deep imports across packages.
 4. Keep shared API contracts owned by `packages/api` and consumed by `packages/web` through `@cinp/api`.
 5. Put logic where it naturally belongs now; extract helpers only for real reuse, shared ownership, or meaningful complexity reduction.
-6. Preserve the current stack and conventions unless the user explicitly asks for a migration.
-7. Use Context7 before relying on current library, framework, SDK, API, CLI, or cloud-service behavior.
-8. Add or update tests when behavior, validation, contracts, or user-visible flows change.
-9. Run focused verification for the affected package and broaden checks when changes cross package boundaries.
-10. Leave unrelated user changes untouched.
+6. Add or update concise JSDoc when creating or changing reusable/exported functions, methods, hooks, utilities, constants, enums, DTOs, shared contracts, or public types.
+7. Preserve the current stack and conventions unless the user explicitly asks for a migration.
+8. Use Context7 before relying on current library, framework, SDK, API, CLI, or cloud-service behavior.
+9. Add or update tests when behavior, validation, contracts, or user-visible flows change.
+10. Run focused verification for the affected package and broaden checks when changes cross package boundaries.
+11. Leave unrelated user changes untouched.
 
 ## Load Detailed Rules
 
@@ -38,5 +39,5 @@ Read `references/common-rules.md` when:
 - Do not import across package internals such as `packages/api/src/...` from web.
 - Do not introduce major tools from `docs/mvp.md` unless they already exist or the task asks for them.
 - Do not mix unrelated cleanup with feature work.
-- Keep comments rare, short, and useful.
+- Keep comments short and useful; JSDoc is expected on reusable or contract-level code, but avoid restating obvious types.
 - Keep generated placeholders out of committed behavior.

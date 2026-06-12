@@ -23,6 +23,8 @@ Use these rules as the detailed reference for `skills/api-coding-practices/SKILL
 - Use `class-validator` decorators for body validation.
 - Add or preserve a global `ValidationPipe` with `whitelist`, `forbidNonWhitelisted`, and `transform` when validation is being wired.
 - Keep DTOs as API contracts; do not expose persistence-only fields such as `deletedAt` or computed timestamps unless explicitly required.
+- Add class-level JSDoc to DTOs explaining the request or response contract they represent.
+- Add property-level JSDoc when a field has domain meaning, units, accepted format, serialization detail, or a constraint not already obvious from its name, TypeScript type, and validators.
 
 ## Shared API Contracts For Web
 
@@ -46,6 +48,7 @@ import type { Difficulty, Problem } from '@cinp/api';
 - Replace scaffolded string-returning service methods with real implementations before exposing behavior.
 - Throw Nest exceptions (`NotFoundException`, `BadRequestException`, `ConflictException`, etc.) instead of returning error strings.
 - Keep persistence logic in services unless a dedicated domain helper is introduced by an established local pattern.
+- Add JSDoc to service methods when they are reusable application operations, enforce non-obvious business rules, throw meaningful domain exceptions, or are called across controllers/domains. Keep simple CRUD pass-through methods documented only when they are part of a public contract that would otherwise be unclear.
 
 ## TypeORM Entities
 
@@ -61,6 +64,7 @@ import type { Difficulty, Problem } from '@cinp/api';
 - Prefer exported string enums:
   - good: `export enum Difficulty { EASY = 'easy' }`;
   - avoid numeric enums for DB/API-facing values.
+- Add JSDoc to exported entities and enums. For entities, describe the domain object and important persistence invariants. For enums, describe the domain dimension; document individual members only when the literal value is not self-explanatory.
 
 ## Relations
 

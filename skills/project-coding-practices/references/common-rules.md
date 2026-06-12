@@ -45,8 +45,11 @@ Use these rules as the shared baseline for coding work in the `cinp` monorepo. P
 
 ## Comments And Generated Code
 
-- Keep comments and JSDoc rare.
-- Write comments in English and only when they explain non-obvious intent, constraints, or tradeoffs.
+- Add or update JSDoc for reusable or contract-level code whenever you create or change it: exported functions, methods, hooks, utilities, constants, enums, DTOs, entities, shared response/read-model contracts, and public types/interfaces.
+- Keep JSDoc immediately above the declaration it documents. Describe what the API is for, important invariants, side effects, error behavior, units, serialization details, or domain meaning that the type signature alone does not explain.
+- Use plain comments inside implementations only for non-obvious intent, constraints, or tradeoffs.
+- Write comments and JSDoc in English.
+- Do not add JSDoc to every page-local callback, trivial event handler, or self-explanatory private variable. Prefer better names when a comment would only repeat the code.
 - Remove commented-out placeholder code before finishing.
 - Replace generated scaffold behavior before exposing it as real functionality.
 
@@ -64,5 +67,6 @@ Use these rules as the shared baseline for coding work in the `cinp` monorepo. P
 - Is the package boundary respected?
 - Are shared contracts exported and imported through the intended public path?
 - Is new abstraction justified by real reuse or complexity?
+- Are JSDoc comments present and current for reusable/exported code and shared contracts?
 - Are comments useful and not restating obvious code?
 - Are tests and verification proportional to the risk?
