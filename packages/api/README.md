@@ -31,6 +31,18 @@
 $ pnpm install
 ```
 
+## Environment
+
+The API reads its database configuration from the root project defaults. JWT
+authentication also requires:
+
+```bash
+JWT_SECRET=replace-with-a-long-random-secret
+JWT_EXPIRES_IN=1h
+```
+
+`JWT_EXPIRES_IN` is optional and defaults to `1h`.
+
 ## Compile and run the project
 
 ```bash

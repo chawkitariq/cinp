@@ -7,6 +7,7 @@ import { ProblemModule } from './problem/problem.module';
 import { AssessmentModule } from './assessment/assessment.module';
 import { AssessmentSessionModule } from './assessment-session/assessment-session.module';
 import { SubmissionModule } from './submission/submission.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { SubmissionModule } from './submission/submission.module';
     AssessmentModule,
     AssessmentSessionModule,
     SubmissionModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
