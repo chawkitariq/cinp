@@ -1,6 +1,6 @@
 ---
 name: api-coding-practices
-description: Project-specific coding standards for packages/api, a NestJS + TypeORM PostgreSQL API. Use when creating, modifying, reviewing, or refactoring files under packages/api; implementing controllers, services, modules, DTOs, entities, tests, database config, validation, or TypeORM relations; or checking code against the audit-derived rules for this repository.
+description: Project-specific coding standards for packages/api, a NestJS + TypeORM PostgreSQL API, including shared API contracts consumed by packages/web through @cinp/api. Use when creating, modifying, reviewing, or refactoring files under packages/api; implementing controllers, services, modules, DTOs, entities, tests, database config, validation, TypeORM relations, or public entity/DTO/type exports used by the web app; or checking code against the audit-derived rules for this repository.
 ---
 
 # API Coding Practices
@@ -20,7 +20,8 @@ Apply the coding rules inferred from the `packages/api` audit. Treat these rules
 7. Verify TypeORM relation cardinality and inverse sides before adding or changing relations.
 8. Align TypeScript optionality with DB nullability.
 9. Add or update behavior tests when implementing real service logic.
-10. Run focused verification, usually `npm run build`, `npm test -- --runInBand`, and lint when practical.
+10. When `packages/web` needs API shapes, export them from `packages/api/src/index.ts` and import them in web from `@cinp/api`; do not rewrite API DTO/entity/type shapes in web.
+11. Run focused verification, usually `npm run build`, `npm test -- --runInBand`, and lint when practical.
 
 ## Load Detailed Rules
 
@@ -29,6 +30,7 @@ Read `references/api-rules.md` when:
 - adding or changing TypeORM entities or relations;
 - implementing CRUD/service behavior;
 - adding DTO validation;
+- changing exports consumed by `packages/web`;
 - reviewing code under `packages/api`;
 - deciding whether scaffolded NestJS code is acceptable.
 
@@ -38,6 +40,7 @@ Read `references/api-rules.md` when:
 - Do not put business logic in controllers.
 - Do not accept entities directly as request bodies.
 - Do not point TypeORM inverse relation callbacks at `.id` fields; point them at relation properties.
+- Do not duplicate API entities, DTOs, enums, or response types in `packages/web`; import shared contracts from `@cinp/api`.
 - Prefer exported string enums for API/DB-facing statuses and categories.
 - Treat `synchronize=true` as development-only.
 - Keep comments rare and useful; remove commented-out placeholder relations.
