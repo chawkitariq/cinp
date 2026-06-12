@@ -1,5 +1,7 @@
 # packages/api Rules
 
+Use these rules as the detailed reference for `skills/api-coding-practices/SKILL.md`. Prefer the smallest coherent change that matches the existing module and repository patterns.
+
 ## Architecture
 
 - Use one NestJS module per domain under `packages/api/src/<domain>`.
@@ -36,6 +38,7 @@ import type { Difficulty, Problem } from '@cinp/api';
 - Prefer `import type` in `packages/web` so Next.js does not bundle server-side NestJS/TypeORM code through shared contracts.
 - Do not import from `packages/api/src/...`, `packages/api/dist/...`, or relative paths crossing from web into api.
 - Do not rewrite API shapes in web (`type Problem = ...`, duplicate DTOs, duplicate enums). If the current API export is not the right browser/HTTP shape, add a named exported contract in `packages/api` and use that from web.
+- The current public API surface is intentionally small. If web needs more than the existing exports, add the missing contract explicitly in `packages/api/src/index.ts` instead of reaching into internal files.
 - Remember that HTTP JSON can differ from the TypeORM entity shape, especially `Date` fields serialized as strings. Model that difference in an exported API response type instead of patching it locally in web.
 - After changing shared exports, build API before validating web: `pnpm --filter api build`, then `pnpm --filter web build`.
 
@@ -81,6 +84,7 @@ import type { Difficulty, Problem } from '@cinp/api';
 - Keep `DB_SYNCHRONIZE=true` for local development only; do not rely on it for production schema changes.
 - Prefer migrations for durable schema evolution.
 - Avoid unsafe non-null assertions on env values when a validation layer can fail early with a clear message.
+- Do not introduce Prisma or replace TypeORM unless the task explicitly requests a migration plan.
 
 ## Tests
 
@@ -91,12 +95,12 @@ import type { Difficulty, Problem } from '@cinp/api';
 
 ## Verification
 
-Run checks from `packages/api` unless the workspace has a root script:
+Run checks with the current workspace commands:
 
 ```bash
-npm run build
-npm test -- --runInBand
-npx eslint "src/**/*.ts"
+pnpm --filter api build
+pnpm --filter api test -- --runInBand
+pnpm --filter api lint
 ```
 
-Known audit baseline: build and Jest passed, while lint failed on generated placeholder services with unused DTO params and `no-floating-promises` warnings in startup/config code. Do not treat that baseline as acceptable for new work.
+Add `pnpm --filter api test:e2e` when the change touches DB wiring, TypeORM relations, or end-to-end HTTP behavior and PostgreSQL is available.
