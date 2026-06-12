@@ -1,14 +1,18 @@
 import { AssessmentProblem } from 'src/assessment/entities/assessment-problem.entity';
 import { Submission } from 'src/submission/entities/submission.entity';
+import { User } from 'src/user/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   Unique,
   UpdateDateColumn,
 } from 'typeorm';
+import { TestCase } from './test-case.entity';
 
 export enum Difficulty {
   EASY = 'easy',
@@ -43,11 +47,21 @@ export class Problem {
   @Column({ name: 'starter_code', nullable: true })
   starterCode?: string;
 
+  @Column({ name: 'created_by_id' })
+  createdById: string;
+
+  @ManyToOne(() => User, (user) => user.createdProblems)
+  @JoinColumn({ name: 'created_by_id' })
+  createdBy: User;
+
   @OneToMany(
     () => AssessmentProblem,
     (assessmentProblem) => assessmentProblem.problem,
   )
   assessments: AssessmentProblem[];
+
+  @OneToMany(() => TestCase, (testCase) => testCase.problem)
+  testCases: TestCase[];
 
   @OneToMany(() => Submission, (submission) => submission.problem)
   submissions: Submission[];

@@ -1,4 +1,4 @@
-import { IsArray, IsEnum, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsEnum, IsOptional, IsString, IsUUID } from 'class-validator';
 import { Difficulty } from '../entities/problem.entity';
 
 export class CreateProblemDto {
@@ -26,4 +26,7 @@ export class CreateProblemDto {
   @IsOptional()
   @IsString()
   starterCode?: string;
+
+  @IsUUID()
+  createdById: string;
 }

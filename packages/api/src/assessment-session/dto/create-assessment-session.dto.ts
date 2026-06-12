@@ -1,5 +1,6 @@
 import {
   IsDateString,
+  IsEmail,
   IsEnum,
   IsInt,
   IsOptional,
@@ -13,8 +14,12 @@ export class CreateAssessmentSessionDto {
   @IsString()
   token: string;
 
-  @IsUUID()
-  candidateId: string;
+  @IsEmail()
+  candidateEmail: string;
+
+  @IsOptional()
+  @IsString()
+  candidateName?: string;
 
   @IsUUID()
   assessmentId: string;

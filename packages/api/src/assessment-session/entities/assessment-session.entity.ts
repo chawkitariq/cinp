@@ -1,6 +1,5 @@
 import { Assessment } from 'src/assessment/entities/assessment.entity';
 import { Submission } from 'src/submission/entities/submission.entity';
-import { User } from 'src/user/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
@@ -29,8 +28,11 @@ export class AssessmentSession {
   @Column()
   token: string;
 
-  @Column({ name: 'candidate_id' })
-  candidateId: string;
+  @Column({ name: 'candidate_email' })
+  candidateEmail: string;
+
+  @Column({ name: 'candidate_name', nullable: true })
+  candidateName?: string;
 
   @Column({ name: 'assessment_id' })
   assessmentId: string;
@@ -49,10 +51,6 @@ export class AssessmentSession {
 
   @Column({ name: 'total_score', default: 0 })
   totalScore: number;
-
-  @ManyToOne(() => User, (user) => user.assessmentSessions)
-  @JoinColumn({ name: 'candidate_id' })
-  candidate: User;
 
   @ManyToOne(() => Assessment, (assessment) => assessment.sessions)
   @JoinColumn({ name: 'assessment_id' })

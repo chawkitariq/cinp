@@ -8,8 +8,8 @@ import {
   Unique,
   UpdateDateColumn,
 } from 'typeorm';
-import { AssessmentSession } from 'src/assessment-session/entities/assessment-session.entity';
 import { Assessment } from 'src/assessment/entities/assessment.entity';
+import { Problem } from 'src/problem/entities/problem.entity';
 
 @Entity({ name: 'users' })
 @Unique(['email'])
@@ -29,8 +29,8 @@ export class User {
   @OneToMany(() => Assessment, (assessment) => assessment.createdBy)
   createdAssessments: Assessment[];
 
-  @OneToMany(() => AssessmentSession, (session) => session.candidate)
-  assessmentSessions: AssessmentSession[];
+  @OneToMany(() => Problem, (problem) => problem.createdBy)
+  createdProblems: Problem[];
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })
   createdAt: Date;
