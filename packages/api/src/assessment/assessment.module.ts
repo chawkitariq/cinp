@@ -10,4 +10,7 @@ import { Assessment } from './entities/assessment.entity';
   controllers: [AssessmentController],
   providers: [AssessmentService],
 })
+/**
+ * NestJS domain module for assessments and ordered problem membership.
+ */
 export class AssessmentModule {}

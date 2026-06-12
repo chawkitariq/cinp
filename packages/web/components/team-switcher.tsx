@@ -19,6 +19,9 @@ import {
 } from "@/components/ui/sidebar"
 import { ChevronsUpDownIcon, PlusIcon } from "lucide-react"
 
+/**
+ * Sidebar tenant selector that keeps the active team in local component state.
+ */
 export function TeamSwitcher({
   teams,
 }: {

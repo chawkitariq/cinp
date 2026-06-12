@@ -31,14 +31,23 @@ import { getProblems } from "@/data/problems";
 import { formatDate } from "@/utils/date";
 import type { Difficulty } from "@cinp/api";
 
+/**
+ * Always render fresh problem data from the local API.
+ */
 export const dynamic = "force-dynamic";
 
+/**
+ * French display labels for API difficulty values.
+ */
 const difficultyLabels: Record<Difficulty, string> = {
   easy: "Facile",
   medium: "Intermediaire",
   hard: "Difficile",
 };
 
+/**
+ * Badge variants mapped to each difficulty level.
+ */
 const difficultyVariants: Record<
   Difficulty,
   ComponentProps<typeof Badge>["variant"]
@@ -48,6 +57,9 @@ const difficultyVariants: Record<
   hard: "destructive",
 };
 
+/**
+ * Truncates long problem descriptions for problem cards.
+ */
 function getShortDescription(description: string) {
   if (description.length <= 170) {
     return description;
@@ -56,6 +68,9 @@ function getShortDescription(description: string) {
   return `${description.slice(0, 167).trim()}...`;
 }
 
+/**
+ * Server-rendered problem library page.
+ */
 export default async function ProblemsPage() {
   const result = await getProblems();
 

@@ -20,10 +20,16 @@ import {
 } from "@/components/ui/sidebar"
 import { ChevronRightIcon } from "lucide-react"
 
+/**
+ * Checks whether a navigation item should be highlighted for the route.
+ */
 function isRouteActive(pathname: string, url: string) {
   return pathname === url || pathname.startsWith(`${url}/`)
 }
 
+/**
+ * Primary sidebar navigation supporting optional nested items.
+ */
 export function NavMain({
   items,
 }: {

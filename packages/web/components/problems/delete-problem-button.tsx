@@ -9,6 +9,9 @@ import { Spinner } from "@/components/ui/spinner";
 import { API_BASE_URL } from "@/constants/api";
 import { getApiErrorMessage } from "@/utils/api-error";
 
+/**
+ * Client action button that confirms and deletes a problem by UUID.
+ */
 export function DeleteProblemButton({ problemId }: { problemId: string }) {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);

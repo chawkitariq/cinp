@@ -42,8 +42,14 @@ import { useMonacoEditor } from "@/hooks/use-monaco-editor";
 import { getApiErrorMessage } from "@/utils/api-error";
 import type { Problem } from "@cinp/api";
 
+/**
+ * Accepted difficulty literals for the problem form and API payload.
+ */
 const difficultyValues = ["easy", "medium", "hard"] as const;
 
+/**
+ * Client-side validation schema matching the create/update problem API.
+ */
 const problemSchema = z.object({
   title: z.string().trim().min(3, "Le titre doit contenir au moins 3 caracteres."),
   slug: z
@@ -90,6 +96,9 @@ const problemSchema = z.object({
 
 type ProblemFormValues = z.infer<typeof problemSchema>;
 
+/**
+ * Props contract for creating a new problem or editing an existing one.
+ */
 type ProblemFormProps =
   | {
       mode: "create";
@@ -100,6 +109,9 @@ type ProblemFormProps =
       problem: Problem;
     };
 
+/**
+ * Empty form state used for problem creation.
+ */
 const emptyValues: ProblemFormValues = {
   title: "",
   slug: "",
@@ -110,12 +122,18 @@ const emptyValues: ProblemFormValues = {
   starterCode: "",
 };
 
+/**
+ * Converts blank optional text fields to undefined for cleaner API payloads.
+ */
 function getOptionalString(value: string) {
   const trimmedValue = value.trim();
 
   return trimmedValue.length > 0 ? trimmedValue : undefined;
 }
 
+/**
+ * Parses the examples JSON textarea into the API examples array.
+ */
 function getExamples(value: string) {
   const trimmedValue = value.trim();
 
@@ -126,6 +144,9 @@ function getExamples(value: string) {
   return JSON.parse(trimmedValue) as Record<string, unknown>[];
 }
 
+/**
+ * Maps an optional API problem entity to editable form values.
+ */
 function getDefaultValues(problem?: Problem): ProblemFormValues {
   if (!problem) {
     return emptyValues;
@@ -144,6 +165,9 @@ function getDefaultValues(problem?: Problem): ProblemFormValues {
   };
 }
 
+/**
+ * Builds the create/update payload expected by the problem API.
+ */
 function getPayload(values: ProblemFormValues) {
   return {
     title: values.title.trim(),
@@ -156,6 +180,9 @@ function getPayload(values: ProblemFormValues) {
   };
 }
 
+/**
+ * Monaco-backed editor field used for starter code input.
+ */
 function StarterCodeEditor({
   disabled,
   invalid,
@@ -200,6 +227,9 @@ function StarterCodeEditor({
   );
 }
 
+/**
+ * Form used to create or edit reusable coding problems.
+ */
 export function ProblemForm({
   mode,
   problem,

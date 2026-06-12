@@ -14,12 +14,18 @@ import {
 } from 'typeorm';
 import { TestCase } from './test-case.entity';
 
+/**
+ * Difficulty bucket used to classify problems for assessment composition.
+ */
 export enum Difficulty {
   EASY = 'easy',
   MEDIUM = 'medium',
   HARD = 'hard',
 }
 
+/**
+ * Technical exercise created by a recruiter and reused in assessments.
+ */
 @Entity({ name: 'problems' })
 @Unique(['slug'])
 export class Problem {
@@ -41,9 +47,15 @@ export class Problem {
   @Column({ type: 'json', nullable: true })
   examples?: Record<string, unknown>[];
 
+  /**
+   * Human-readable constraints shown to candidates, such as input limits.
+   */
   @Column({ nullable: true })
   constraints?: string;
 
+  /**
+   * Optional starter code displayed in the web editor before submission.
+   */
   @Column({ name: 'starter_code', nullable: true })
   starterCode?: string;
 

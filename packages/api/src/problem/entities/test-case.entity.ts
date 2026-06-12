@@ -9,6 +9,9 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
+/**
+ * Executable input/output case used to validate a candidate submission.
+ */
 @Entity({ name: 'test_cases' })
 export class TestCase {
   @PrimaryGeneratedColumn('uuid')
@@ -20,9 +23,15 @@ export class TestCase {
   @Column({ type: 'json' })
   input: Record<string, unknown>;
 
+  /**
+   * JSON-serializable expected result compared with the execution output.
+   */
   @Column({ name: 'expected_output', type: 'json' })
   expectedOutput: unknown;
 
+  /**
+   * Marks cases that may be shown to candidates as examples.
+   */
   @Column({ name: 'is_public', default: false })
   isPublic: boolean;
 

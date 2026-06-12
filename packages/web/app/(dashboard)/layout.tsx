@@ -1,5 +1,8 @@
 import { DashboardShell } from "@/components/dashboard-shell"
 
+/**
+ * Layout wrapper for authenticated dashboard routes.
+ */
 export default function DashboardLayout({
   children,
 }: {

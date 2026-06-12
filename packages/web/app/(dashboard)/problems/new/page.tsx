@@ -4,6 +4,9 @@ import { ArrowLeftIcon } from "lucide-react";
 import { ProblemForm } from "@/components/problems/problem-form";
 import { Button } from "@/components/ui/button";
 
+/**
+ * Page for creating a new reusable coding problem.
+ */
 export default function NewProblemPage() {
   return (
     <main className="min-h-screen bg-muted/30 px-4 py-8 sm:px-6 lg:px-8">

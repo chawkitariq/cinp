@@ -12,8 +12,14 @@ import {
 } from "@/components/ui/empty";
 import { getProblem } from "@/data/problems";
 
+/**
+ * Always render fresh problem edit data from the local API.
+ */
 export const dynamic = "force-dynamic";
 
+/**
+ * Page for editing an existing reusable coding problem.
+ */
 export default async function EditProblemPage({
   params,
 }: {

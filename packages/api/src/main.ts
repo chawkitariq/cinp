@@ -2,6 +2,9 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
+/**
+ * Starts the NestJS HTTP server with CORS and global DTO validation enabled.
+ */
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors();

@@ -3,6 +3,9 @@ import { notFound } from "next/navigation";
 import { API_BASE_URL } from "@/constants/api";
 import type { Problem } from "@cinp/api";
 
+/**
+ * Result shape returned by the problems list fetcher without throwing in pages.
+ */
 export type ProblemsResult =
   | {
       ok: true;
@@ -13,6 +16,9 @@ export type ProblemsResult =
       message: string;
     };
 
+/**
+ * Result shape returned by the single-problem fetcher after 404 handling.
+ */
 export type ProblemResult =
   | {
       ok: true;
@@ -23,6 +29,9 @@ export type ProblemResult =
       message: string;
     };
 
+/**
+ * Fetches all problems from the API without using the Next.js data cache.
+ */
 export async function getProblems(): Promise<ProblemsResult> {
   let response: Response;
 
@@ -50,6 +59,9 @@ export async function getProblems(): Promise<ProblemsResult> {
   return { ok: true, problems };
 }
 
+/**
+ * Fetches one problem by API UUID and delegates 404 responses to Next.js.
+ */
 export async function getProblem(id: string): Promise<ProblemResult> {
   let response: Response;
 

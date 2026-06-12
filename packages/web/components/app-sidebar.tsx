@@ -20,6 +20,9 @@ import {
   TerminalIcon,
 } from "lucide-react"
 
+/**
+ * Static sidebar seed data used until the dashboard has authenticated tenants.
+ */
 const data = {
   user: {
     name: "CINP",
@@ -82,6 +85,9 @@ const data = {
   ],
 }
 
+/**
+ * Application sidebar with tenant switcher, primary nav, and user menu.
+ */
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>

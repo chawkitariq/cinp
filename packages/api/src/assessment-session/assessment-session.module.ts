@@ -9,4 +9,7 @@ import { AssessmentSession } from './entities/assessment-session.entity';
   controllers: [AssessmentSessionController],
   providers: [AssessmentSessionService],
 })
+/**
+ * NestJS domain module for candidate assessment sessions.
+ */
 export class AssessmentSessionModule {}

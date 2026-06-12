@@ -11,6 +11,9 @@ import {
 import { Assessment } from 'src/assessment/entities/assessment.entity';
 import { Problem } from 'src/problem/entities/problem.entity';
 
+/**
+ * Platform account that can create recruiting content and own resources.
+ */
 @Entity({ name: 'users' })
 @Unique(['email'])
 export class User {
@@ -20,9 +23,15 @@ export class User {
   @Column()
   email: string;
 
+  /**
+   * Password credential as currently persisted by the MVP API.
+   */
   @Column()
   password: string;
 
+  /**
+   * Grants access to recruiter-owned authoring workflows.
+   */
   @Column({ name: 'is_recruiter', default: false })
   isRecruiter: boolean;
 

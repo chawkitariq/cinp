@@ -1,3 +1,6 @@
+/**
+ * Extracts a user-facing API error message from the NestJS response body.
+ */
 export async function getApiErrorMessage(response: Response) {
   try {
     const body = (await response.json()) as { message?: unknown };

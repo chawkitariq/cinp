@@ -20,4 +20,7 @@ import { SubmissionModule } from './submission/submission.module';
   controllers: [AppController],
   providers: [AppService],
 })
+/**
+ * Root NestJS module composing infrastructure and domain modules.
+ */
 export class AppModule {}

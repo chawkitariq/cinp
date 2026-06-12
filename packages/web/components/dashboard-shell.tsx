@@ -18,12 +18,18 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 
+/**
+ * Static route title map used by the dashboard breadcrumb.
+ */
 const pageTitles: Record<string, string> = {
   "/dashboard": "Vue d'ensemble",
   "/problems": "Problemes",
   "/problems/new": "Nouveau probleme",
 }
 
+/**
+ * Resolves dynamic dashboard paths to a breadcrumb title.
+ */
 function getCurrentTitle(pathname: string) {
   if (pathname.startsWith("/problems/") && pathname.endsWith("/edit")) {
     return "Modifier le probleme"
@@ -36,6 +42,9 @@ function getCurrentTitle(pathname: string) {
   return pageTitles[pathname] ?? "Dashboard"
 }
 
+/**
+ * Wraps dashboard pages with the shared sidebar and breadcrumb chrome.
+ */
 export function DashboardShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const currentTitle = getCurrentTitle(pathname)

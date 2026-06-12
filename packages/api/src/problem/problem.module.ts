@@ -10,4 +10,7 @@ import { TestCase } from './entities/test-case.entity';
   controllers: [ProblemController],
   providers: [ProblemService],
 })
+/**
+ * NestJS domain module for technical problems and validation test cases.
+ */
 export class ProblemModule {}

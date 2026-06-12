@@ -9,6 +9,9 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
+/**
+ * Execution and grading lifecycle for a submitted solution.
+ */
 export enum SubmissionStatus {
   PENDING = 'pending',
   RUNNING = 'running',
@@ -17,6 +20,9 @@ export enum SubmissionStatus {
   ERROR = 'error',
 }
 
+/**
+ * Candidate code submission for a problem within an assessment session.
+ */
 @Entity({ name: 'submissions' })
 export class Submission {
   @PrimaryGeneratedColumn('uuid')
@@ -31,6 +37,9 @@ export class Submission {
   @Column()
   language: string;
 
+  /**
+   * Source code submitted by the candidate.
+   */
   @Column({ type: 'text' })
   code: string;
 
@@ -44,12 +53,21 @@ export class Submission {
   @Column({ default: 0 })
   score: number;
 
+  /**
+   * Number of validation test cases that passed.
+   */
   @Column({ name: 'passed_tests', default: 0 })
   passedTests: number;
 
+  /**
+   * Total number of validation test cases executed.
+   */
   @Column({ name: 'total_tests', default: 0 })
   totalTests: number;
 
+  /**
+   * Runtime reported by the execution engine in milliseconds.
+   */
   @Column({ name: 'runtime_ms', nullable: true })
   runtimeMs?: number;
 

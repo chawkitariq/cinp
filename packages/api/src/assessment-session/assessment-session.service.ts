@@ -12,6 +12,9 @@ export class AssessmentSessionService {
     private readonly assessmentSessionRepository: Repository<AssessmentSession>,
   ) {}
 
+  /**
+   * Creates a candidate session and converts incoming ISO date strings to dates.
+   */
   create(createAssessmentSessionDto: CreateAssessmentSessionDto) {
     const assessmentSession = this.assessmentSessionRepository.create(
       this.toEntity(createAssessmentSessionDto),
@@ -19,10 +22,16 @@ export class AssessmentSessionService {
     return this.assessmentSessionRepository.save(assessmentSession);
   }
 
+  /**
+   * Lists all assessment sessions without relation expansion.
+   */
   findAll() {
     return this.assessmentSessionRepository.find();
   }
 
+  /**
+   * Finds a session by UUID or throws when the invitation does not exist.
+   */
   async findOne(id: string) {
     const assessmentSession = await this.assessmentSessionRepository.findOne({
       where: { id },
@@ -35,6 +44,9 @@ export class AssessmentSessionService {
     return assessmentSession;
   }
 
+  /**
+   * Applies partial session changes and preserves TypeORM not-found semantics.
+   */
   async update(
     id: string,
     updateAssessmentSessionDto: UpdateAssessmentSessionDto,
@@ -51,6 +63,9 @@ export class AssessmentSessionService {
     return this.assessmentSessionRepository.save(assessmentSession);
   }
 
+  /**
+   * Deletes a session by UUID and reports whether a row was removed.
+   */
   async remove(id: string) {
     const result = await this.assessmentSessionRepository.delete(id);
 
@@ -61,6 +76,9 @@ export class AssessmentSessionService {
     return { deleted: true };
   }
 
+  /**
+   * Maps DTO date strings to entity date values for persistence.
+   */
   private toEntity(
     dto: CreateAssessmentSessionDto | UpdateAssessmentSessionDto,
   ): Partial<AssessmentSession> {

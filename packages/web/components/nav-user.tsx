@@ -22,6 +22,9 @@ import {
 } from "@/components/ui/sidebar"
 import { ChevronsUpDownIcon, SparklesIcon, BadgeCheckIcon, CreditCardIcon, BellIcon, LogOutIcon } from "lucide-react"
 
+/**
+ * Sidebar user account menu rendered in the dashboard footer.
+ */
 export function NavUser({
   user,
 }: {

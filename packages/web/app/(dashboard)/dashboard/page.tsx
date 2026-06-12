@@ -1,3 +1,6 @@
+/**
+ * Placeholder dashboard overview screen for the MVP shell.
+ */
 export default function Page() {
   return (
     <main className="flex flex-1 flex-col gap-4 p-4 pt-0">

@@ -12,12 +12,18 @@ import {
 } from 'typeorm';
 import { AssessmentProblem } from './assessment-problem.entity';
 
+/**
+ * Publication lifecycle for an assessment invitation flow.
+ */
 export enum AssessmentStatus {
   DRAFT = 'draft',
   ACTIVE = 'active',
   CLOSED = 'closed',
 }
 
+/**
+ * Timed set of problems assembled by a recruiter for candidates.
+ */
 @Entity({ name: 'assessments' })
 export class Assessment {
   @PrimaryGeneratedColumn('uuid')
@@ -29,6 +35,9 @@ export class Assessment {
   @Column({ nullable: true })
   description?: string;
 
+  /**
+   * Assessment duration in minutes.
+   */
   @Column({ name: 'duration_min' })
   durationMin: number;
 

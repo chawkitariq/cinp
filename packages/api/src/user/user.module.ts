@@ -9,4 +9,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   controllers: [UserController],
   providers: [UserService],
 })
+/**
+ * NestJS domain module for platform users.
+ */
 export class UserModule {}

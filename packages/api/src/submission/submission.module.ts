@@ -9,4 +9,7 @@ import { Submission } from './entities/submission.entity';
   controllers: [SubmissionController],
   providers: [SubmissionService],
 })
+/**
+ * NestJS domain module for candidate code submissions.
+ */
 export class SubmissionModule {}

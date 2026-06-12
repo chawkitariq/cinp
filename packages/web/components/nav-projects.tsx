@@ -18,6 +18,9 @@ import {
 } from "@/components/ui/sidebar"
 import { MoreHorizontalIcon, FolderIcon, ArrowRightIcon, Trash2Icon } from "lucide-react"
 
+/**
+ * Sidebar project list with per-project contextual actions.
+ */
 export function NavProjects({
   projects,
 }: {
