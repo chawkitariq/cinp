@@ -25,6 +25,14 @@ const pageTitles: Record<string, string> = {
 }
 
 function getCurrentTitle(pathname: string) {
+  if (pathname.startsWith("/problems/") && pathname.endsWith("/edit")) {
+    return "Modifier le probleme"
+  }
+
+  if (pathname.startsWith("/problems/")) {
+    return "Detail du probleme"
+  }
+
   return pageTitles[pathname] ?? "Dashboard"
 }
 

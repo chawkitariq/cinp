@@ -4,6 +4,7 @@ import {
   AlertCircleIcon,
   ArrowRightIcon,
   Code2Icon,
+  EditIcon,
   PlusIcon,
 } from "lucide-react";
 
@@ -26,21 +27,11 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty";
-import { API_BASE_URL } from "@/constants/api";
+import { getProblems } from "@/data/problems";
 import { formatDate } from "@/utils/date";
-import type { Problem, Difficulty } from "@cinp/api";
+import type { Difficulty } from "@cinp/api";
 
 export const dynamic = "force-dynamic";
-
-type ProblemsResult =
-  | {
-      ok: true;
-      problems: Problem[];
-    }
-  | {
-      ok: false;
-      message: string;
-    };
 
 const difficultyLabels: Record<Difficulty, string> = {
   easy: "Facile",
@@ -56,31 +47,6 @@ const difficultyVariants: Record<
   medium: "outline",
   hard: "destructive",
 };
-
-async function getProblems(): Promise<ProblemsResult> {
-  try {
-    const response = await fetch(`${API_BASE_URL}/problem`, {
-      cache: "no-store",
-    });
-
-    if (!response.ok) {
-      return {
-        ok: false,
-        message: `L'API a retourne une erreur ${response.status}.`,
-      };
-    }
-
-    const problems = (await response.json()) as Problem[];
-
-    return { ok: true, problems };
-  } catch {
-    return {
-      ok: false,
-      message:
-        "Impossible de joindre l'API. Verifie que le serveur NestJS est lance.",
-    };
-  }
-}
 
 function getShortDescription(description: string) {
   if (description.length <= 170) {
@@ -181,12 +147,20 @@ export default async function ProblemsPage() {
                   <span className="text-xs text-muted-foreground">
                     Ajoute le {formatDate(problem.createdAt)}
                   </span>
-                  <Button asChild size="sm" variant="ghost">
-                    <Link href={`/problems/${problem.id}`}>
-                      Voir
-                      <ArrowRightIcon data-icon="inline-end" />
-                    </Link>
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button asChild size="sm" variant="ghost">
+                      <Link href={`/problems/${problem.id}/edit`}>
+                        <EditIcon data-icon="inline-start" />
+                        Modifier
+                      </Link>
+                    </Button>
+                    <Button asChild size="sm" variant="ghost">
+                      <Link href={`/problems/${problem.id}`}>
+                        Voir
+                        <ArrowRightIcon data-icon="inline-end" />
+                      </Link>
+                    </Button>
+                  </div>
                 </CardFooter>
               </Card>
             ))}
