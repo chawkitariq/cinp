@@ -1,6 +1,6 @@
 ---
 name: git-conventions
-description: Project-specific Git conventions for this repository. Use when creating or reviewing branch names, commit messages, staged changes, commit plans, pull request titles, release notes, or any workflow involving git status, git diff, git log, or .git/COMMIT_EDITMSG. Enforce the repository's Conventional Commit style, scopes such as packages/api and packages/web, branch naming, atomic commits, and pre-commit verification.
+description: Project-specific Git conventions for this repository. Use when creating or reviewing branch names, commit messages, staged changes, commit plans, pull request titles, release notes, or any workflow involving git status, git diff, git add, git commit, git log, or .git/COMMIT_EDITMSG. Enforce the repository's Conventional Commit style, scopes such as packages/api and packages/web, branch naming, atomic commits, pre-commit verification, and safe execution of git commands when the user wants the agent to prepare or create commits.
 ---
 
 # Git Conventions
@@ -14,12 +14,14 @@ Apply the Git conventions inferred from this repository's history. Prefer these 
 1. Inspect `git status --short` before proposing commits or branches.
 2. Inspect the staged diff with `git diff --cached --stat` and `git diff --cached` before writing a commit message.
 3. Keep commits atomic: one coherent change per commit.
-4. Use Conventional Commits with optional scope.
-5. Prefer scopes that match the touched project area, especially `packages/api`, `packages/web`, `docs`, `docker`, or `skills`.
-6. Keep the subject lowercase after the type/scope unless a proper noun requires capitalization.
-7. Keep the subject imperative, concise, and under 72 characters when practical.
-8. Run relevant verification before committing when code changed.
-9. Never amend, reset, rebase, force-push, or discard user changes unless explicitly requested.
+4. When the user asks to commit, stage only the files that belong to the intended logical change; avoid sweeping in unrelated worktree changes.
+5. Use Conventional Commits with optional scope.
+6. Prefer scopes that match the touched project area, especially `packages/api`, `packages/web`, `docs`, `docker`, or `skills`.
+7. Keep the subject lowercase after the type/scope unless a proper noun requires capitalization.
+8. Keep the subject imperative, concise, and under 72 characters when practical.
+9. Run relevant verification before committing when code changed.
+10. Execute `git add` and `git commit` directly when the user wants the agent to create the commit and the staged content is well understood.
+11. Never amend, reset, rebase, force-push, or discard user changes unless explicitly requested.
 
 ## Load Detailed Rules
 
@@ -28,6 +30,8 @@ Read `references/git-rules.md` when:
 - naming a branch;
 - writing or reviewing a commit message;
 - splitting a diff into commits;
+- deciding which files to stage or leave unstaged;
+- executing `git add` or `git commit` on the user's behalf;
 - preparing a pull request title or description;
 - checking whether staged changes match the intended commit;
 - editing `.git/COMMIT_EDITMSG`.
@@ -39,4 +43,6 @@ Read `references/git-rules.md` when:
 - Good example: `feat(packages/api): setup database module`.
 - Good example: `chore: make api-coding-practices skill`.
 - Avoid vague subjects such as `update`, `fix stuff`, or `wip`.
+- Prefer explicit staging such as `git add path/to/file` over `git add .` when unrelated changes exist.
+- If the user asks for a commit, the agent should perform the commit instead of stopping at a suggested message.
 - Mention verification performed in the final response, not necessarily in the commit subject.

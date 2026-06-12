@@ -127,10 +127,14 @@ docs/project-setup
 Before committing:
 
 1. Run `git status --short`.
-2. Review staged files with `git diff --cached --stat`.
-3. Inspect staged content with `git diff --cached`.
-4. Confirm all staged changes belong to the same logical change.
-5. Keep unrelated user changes unstaged.
+2. Review unstaged and staged files to understand whether unrelated work is already present.
+3. Stage intentionally:
+   - prefer `git add path/to/file` or `git add path/to/dir`;
+   - avoid `git add .` when the worktree contains unrelated changes.
+4. Review staged files with `git diff --cached --stat`.
+5. Inspect staged content with `git diff --cached`.
+6. Confirm all staged changes belong to the same logical change.
+7. Keep unrelated user changes unstaged.
 
 Split commits when a diff mixes:
 
@@ -139,6 +143,49 @@ Split commits when a diff mixes:
 - dependency changes and behavioral code;
 - tests for one area and implementation in another unrelated area.
 
+## Executing Git Commands
+
+When the user asks the agent to create a commit, the agent should perform the Git workflow directly instead of only proposing a commit message.
+
+Preferred sequence:
+
+1. Inspect `git status --short`.
+2. Decide which files belong to the requested logical change.
+3. Stage only those files.
+4. Review the staged diff.
+5. Run the relevant verification for the touched area when practical.
+6. Create the commit with an explicit Conventional Commit message.
+7. Report the commit result and verification status back to the user.
+
+Command guidance:
+
+- Prefer targeted staging:
+
+```bash
+git add path/to/file
+git add path/to/dir
+```
+
+- Create commits non-interactively:
+
+```bash
+git commit -m "feat(packages/web): add problem creation page"
+```
+
+- Re-check the result after committing:
+
+```bash
+git status --short
+git log -1 --oneline
+```
+
+Safety rules:
+
+- Do not stage unrelated user changes just to make the worktree clean.
+- Do not use destructive commands such as `git reset --hard`, `git checkout --`, or history-rewriting operations unless the user explicitly requests them.
+- Do not amend an existing commit unless the user explicitly asks for an amend.
+- If the requested commit would mix unrelated changes and the split cannot be inferred safely, pause and ask the user which files should be included.
+
 ## Verification Before Commit
 
 Match checks to the touched area.
@@ -146,18 +193,27 @@ Match checks to the touched area.
 For `packages/api` code:
 
 ```bash
-npm run build
-npm test -- --runInBand
-npx eslint "src/**/*.ts"
+pnpm --filter api build
+pnpm --filter api test -- --runInBand
+pnpm --filter api lint
 ```
 
 For e2e/API DB changes:
 
 ```bash
-npm run test:e2e
+pnpm --filter api test:e2e
 ```
 
 Note: e2e may require PostgreSQL local access and can be blocked by sandboxing.
+
+For `packages/web` code:
+
+```bash
+pnpm --filter web lint
+pnpm --filter web build
+```
+
+Use `lint` as the default check; add `build` when the change affects routes, shared contracts, client/server boundaries, or framework configuration.
 
 For skills:
 

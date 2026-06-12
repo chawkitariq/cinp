@@ -1,4 +1,4 @@
 interface:
   display_name: "Git Conventions"
-  short_description: "Project branch and commit rules"
-  default_prompt: "Use $git-conventions to name a branch, write a commit, or review Git changes for this project."
+  short_description: "Project git rules and commit workflow"
+  default_prompt: "Use $git-conventions to stage changes, create a commit, or review Git work for this project."
