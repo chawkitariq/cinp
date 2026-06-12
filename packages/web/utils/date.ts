@@ -1,4 +1,4 @@
-export function formatDate(value?: string) {
+export function formatDate(value?: Date | string) {
   if (!value) {
     return "Date inconnue";
   }
