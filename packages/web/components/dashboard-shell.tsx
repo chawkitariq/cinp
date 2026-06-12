@@ -1,3 +1,7 @@
+"use client"
+
+import { usePathname } from "next/navigation"
+
 import { AppSidebar } from "@/components/app-sidebar"
 import {
   Breadcrumb,
@@ -14,7 +18,20 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 
-export default function Page() {
+const pageTitles: Record<string, string> = {
+  "/dashboard": "Vue d'ensemble",
+  "/problems": "Problemes",
+  "/problems/new": "Nouveau probleme",
+}
+
+function getCurrentTitle(pathname: string) {
+  return pageTitles[pathname] ?? "Dashboard"
+}
+
+export function DashboardShell({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname()
+  const currentTitle = getCurrentTitle(pathname)
+
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -29,26 +46,17 @@ export default function Page() {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="#">
-                    Build Your Application
-                  </BreadcrumbLink>
+                  <BreadcrumbLink href="/dashboard">Dashboard</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
-                  <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+                  <BreadcrumbPage>{currentTitle}</BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
           </div>
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-            <div className="aspect-video rounded-xl bg-muted/50" />
-            <div className="aspect-video rounded-xl bg-muted/50" />
-            <div className="aspect-video rounded-xl bg-muted/50" />
-          </div>
-          <div className="min-h-screen flex-1 rounded-xl bg-muted/50 md:min-h-min" />
-        </div>
+        {children}
       </SidebarInset>
     </SidebarProvider>
   )
