@@ -318,6 +318,9 @@ importers:
 
   packages/web:
     dependencies:
+      '@cinp/api':
+        specifier: workspace:*
+        version: link:../api
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1

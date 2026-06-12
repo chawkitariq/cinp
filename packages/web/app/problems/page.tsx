@@ -1,14 +1,14 @@
-import Link from "next/link"
-import type { ComponentProps } from "react"
+import Link from "next/link";
+import type { ComponentProps } from "react";
 import {
   AlertCircleIcon,
   ArrowRightIcon,
   Code2Icon,
   PlusIcon,
-} from "lucide-react"
+} from "lucide-react";
 
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardAction,
@@ -17,7 +17,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
   Empty,
   EmptyContent,
@@ -25,42 +25,28 @@ import {
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
-} from "@/components/ui/empty"
-import { API_BASE_URL } from "@/constants/api"
-import { formatDate } from "@/utils/date"
+} from "@/components/ui/empty";
+import { API_BASE_URL } from "@/constants/api";
+import { formatDate } from "@/utils/date";
+import type { Problem, Difficulty } from "@cinp/api";
 
-export const dynamic = "force-dynamic"
-
-type Difficulty = "easy" | "medium" | "hard"
-
-type Problem = {
-  id: string
-  title: string
-  slug: string
-  difficulty: Difficulty
-  description: string
-  constraints?: string | null
-  examples?: Record<string, unknown>[] | null
-  starterCode?: string | null
-  createdAt?: string
-  updatedAt?: string
-}
+export const dynamic = "force-dynamic";
 
 type ProblemsResult =
   | {
-      ok: true
-      problems: Problem[]
+      ok: true;
+      problems: Problem[];
     }
   | {
-      ok: false
-      message: string
-    }
+      ok: false;
+      message: string;
+    };
 
 const difficultyLabels: Record<Difficulty, string> = {
   easy: "Facile",
   medium: "Intermediaire",
   hard: "Difficile",
-}
+};
 
 const difficultyVariants: Record<
   Difficulty,
@@ -69,43 +55,43 @@ const difficultyVariants: Record<
   easy: "secondary",
   medium: "outline",
   hard: "destructive",
-}
+};
 
 async function getProblems(): Promise<ProblemsResult> {
   try {
     const response = await fetch(`${API_BASE_URL}/problem`, {
       cache: "no-store",
-    })
+    });
 
     if (!response.ok) {
       return {
         ok: false,
         message: `L'API a retourne une erreur ${response.status}.`,
-      }
+      };
     }
 
-    const problems = (await response.json()) as Problem[]
+    const problems = (await response.json()) as Problem[];
 
-    return { ok: true, problems }
+    return { ok: true, problems };
   } catch {
     return {
       ok: false,
       message:
         "Impossible de joindre l'API. Verifie que le serveur NestJS est lance.",
-    }
+    };
   }
 }
 
 function getShortDescription(description: string) {
   if (description.length <= 170) {
-    return description
+    return description;
   }
 
-  return `${description.slice(0, 167).trim()}...`
+  return `${description.slice(0, 167).trim()}...`;
 }
 
 export default async function ProblemsPage() {
-  const result = await getProblems()
+  const result = await getProblems();
 
   return (
     <main className="min-h-screen bg-muted/30 px-4 py-8 sm:px-6 lg:px-8">
@@ -208,5 +194,5 @@ export default async function ProblemsPage() {
         )}
       </div>
     </main>
-  )
+  );
 }
