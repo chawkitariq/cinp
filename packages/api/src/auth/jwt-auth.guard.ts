@@ -4,8 +4,13 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
+import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from 'express';
+import { Repository } from 'typeorm';
+import { IS_PUBLIC_KEY } from './public.decorator';
+import { User } from 'src/user/entities/user.entity';
 
 /**
  * Authenticated JWT payload attached to requests after guard validation.
@@ -17,20 +22,34 @@ export interface JwtAuthPayload {
 }
 
 /**
- * Express request enriched by the JWT auth guard.
+ * Express request enriched with the authenticated user entity.
  */
 export interface AuthenticatedRequest extends Request {
-  user: JwtAuthPayload;
+  user: User;
 }
 
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
-  constructor(private readonly jwtService: JwtService) {}
+  constructor(
+    private readonly reflector: Reflector,
+    private readonly jwtService: JwtService,
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+  ) {}
 
   /**
-   * Validates a bearer token and attaches its payload to the current request.
+   * Validates a bearer token and attaches its user entity to the current request.
    */
   async canActivate(context: ExecutionContext): Promise<boolean> {
+    const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
+
+    if (isPublic) {
+      return true;
+    }
+
     const request = context.switchToHttp().getRequest<AuthenticatedRequest>();
     const token = this.extractTokenFromHeader(request);
 
@@ -38,13 +57,26 @@ export class JwtAuthGuard implements CanActivate {
       throw new UnauthorizedException('Bearer token is required');
     }
 
+    const payload = await this.verifyToken(token);
+    const user = await this.userRepository.findOne({
+      where: { id: payload.sub },
+    });
+
+    if (!user) {
+      throw new UnauthorizedException('Authenticated user was not found');
+    }
+
+    request.user = user;
+
+    return true;
+  }
+
+  private async verifyToken(token: string): Promise<JwtAuthPayload> {
     try {
-      request.user = await this.jwtService.verifyAsync<JwtAuthPayload>(token);
+      return await this.jwtService.verifyAsync<JwtAuthPayload>(token);
     } catch {
       throw new UnauthorizedException('Invalid bearer token');
     }
-
-    return true;
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {

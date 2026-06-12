@@ -8,6 +8,7 @@ import {
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
+import { Public } from './public.decorator';
 
 @Controller('auth')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -17,6 +18,7 @@ export class AuthController {
   /**
    * Registers a user account and returns a JWT access token.
    */
+  @Public()
   @Post('register')
   register(@Body() registerDto: RegisterDto) {
     return this.authService.register(registerDto);
@@ -25,6 +27,7 @@ export class AuthController {
   /**
    * Authenticates an existing user and returns a JWT access token.
    */
+  @Public()
   @Post('login')
   login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto);
