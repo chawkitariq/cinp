@@ -1,6 +1,6 @@
 # packages/api Rules
 
-Use these rules as the detailed reference for `skills/api-coding-practices/SKILL.md`. Prefer the smallest coherent change that matches the existing module and repository patterns.
+Use these rules as the detailed reference for `skills/api-coding-practices/SKILL.md`. Pair them with `skills/project-coding-practices/references/common-rules.md` for repository-wide workflow, package-boundary, shared-contract, and verification defaults.
 
 ## Architecture
 
@@ -26,8 +26,8 @@ Use these rules as the detailed reference for `skills/api-coding-practices/SKILL
 
 ## Shared API Contracts For Web
 
-- Treat `packages/api` as the owner of API entities, DTOs, enums, and response/read-model types.
-- Expose web-consumed contracts from `packages/api/src/index.ts`; `packages/api/package.json` should publish the public type entry through `types` and `exports`.
+- Follow `skills/project-coding-practices/references/common-rules.md` for ownership, package boundaries, and no-duplication rules.
+- Ensure `packages/api/package.json` publishes the public type entry through `types` and `exports`.
 - Add `@cinp/api` to `packages/web/package.json` with `workspace:*` when web needs API contracts.
 - In web code, import from the package boundary:
 
@@ -36,10 +36,7 @@ import type { Difficulty, Problem } from '@cinp/api';
 ```
 
 - Prefer `import type` in `packages/web` so Next.js does not bundle server-side NestJS/TypeORM code through shared contracts.
-- Do not import from `packages/api/src/...`, `packages/api/dist/...`, or relative paths crossing from web into api.
-- Do not rewrite API shapes in web (`type Problem = ...`, duplicate DTOs, duplicate enums). If the current API export is not the right browser/HTTP shape, add a named exported contract in `packages/api` and use that from web.
 - The current public API surface is intentionally small. If web needs more than the existing exports, add the missing contract explicitly in `packages/api/src/index.ts` instead of reaching into internal files.
-- Remember that HTTP JSON can differ from the TypeORM entity shape, especially `Date` fields serialized as strings. Model that difference in an exported API response type instead of patching it locally in web.
 - After changing shared exports, build API before validating web: `pnpm --filter api build`, then `pnpm --filter web build`.
 
 ## Services And Repositories

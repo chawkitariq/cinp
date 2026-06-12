@@ -1,6 +1,6 @@
 # packages/web Rules
 
-Use these rules as the detailed reference for `skills/web-coding-practices/SKILL.md`. Prefer the smallest coherent change that matches the existing route, component, and styling patterns.
+Use these rules as the detailed reference for `skills/web-coding-practices/SKILL.md`. Pair them with `skills/project-coding-practices/references/common-rules.md` for repository-wide workflow, package-boundary, shared-contract, and verification defaults.
 
 ## Table Of Contents
 
@@ -61,11 +61,8 @@ Use these rules as the detailed reference for `skills/web-coding-practices/SKILL
 
 ## Data And Shared Contracts
 
-- Treat `@cinp/api` as the owner of shared API contracts.
+- Follow `skills/project-coding-practices/references/common-rules.md` for shared-contract ownership, package boundaries, and no-duplication rules.
 - Import shared types from `@cinp/api`, preferably with `import type`.
-- Do not recreate API entities, enums, or payload shapes inside `packages/web`.
-- Do not import from `packages/api/src/...`, `packages/api/dist/...`, or relative paths crossing package boundaries.
-- Remember that JSON responses can differ from backend entity runtime types, especially dates. If the current exported contract is not browser-accurate, add an explicit shared contract in `packages/api` instead of patching the shape ad hoc in web.
 - Keep API endpoint base values centralized in `constants/api.ts` instead of scattering literals across routes.
 
 ## Forms And Client Logic
