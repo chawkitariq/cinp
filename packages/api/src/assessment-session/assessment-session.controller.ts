@@ -12,7 +12,7 @@ import { AssessmentSessionService } from './assessment-session.service';
 import { CreateAssessmentSessionDto } from './dto/create-assessment-session.dto';
 import { UpdateAssessmentSessionDto } from './dto/update-assessment-session.dto';
 
-@Controller('assessment-session')
+@Controller('assessment-sessions')
 export class AssessmentSessionController {
   constructor(
     private readonly assessmentSessionService: AssessmentSessionService,

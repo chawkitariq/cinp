@@ -12,7 +12,7 @@ import { SubmissionService } from './submission.service';
 import { CreateSubmissionDto } from './dto/create-submission.dto';
 import { UpdateSubmissionDto } from './dto/update-submission.dto';
 
-@Controller('submission')
+@Controller('submissions')
 export class SubmissionController {
   constructor(private readonly submissionService: SubmissionService) {}
 
