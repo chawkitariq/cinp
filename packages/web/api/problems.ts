@@ -2,20 +2,7 @@ import { notFound } from "next/navigation";
 
 import { API_BASE_URL } from "@/constants/api";
 import { getApiErrorMessage } from "@/utils/api-error";
-import type { Problem } from "@cinp/api";
-
-/**
- * Request payload used to create or update a reusable coding problem.
- */
-export type ProblemMutationPayload = {
-  title: string;
-  slug: string;
-  difficulty: Problem["difficulty"];
-  description: string;
-  examples?: Record<string, unknown>[];
-  constraints?: string;
-  starterCode?: string;
-};
+import type { CreateProblemDto, Problem, UpdateProblemDto } from "@cinp/api";
 
 const apiUnavailableMessage =
   "Impossible de joindre l'API. Verifie que le serveur NestJS est lance.";
@@ -122,7 +109,7 @@ export async function getProblem(id: string): Promise<ProblemResult> {
 /**
  * Creates a problem through the API and returns the saved entity.
  */
-export async function createProblem(payload: ProblemMutationPayload) {
+export async function createProblem(payload: CreateProblemDto) {
   const response = await fetchProblemMutation(`${API_BASE_URL}/problems`, {
     method: "POST",
     headers: {
@@ -143,7 +130,7 @@ export async function createProblem(payload: ProblemMutationPayload) {
  */
 export async function updateProblem(
   id: string,
-  payload: ProblemMutationPayload,
+  payload: UpdateProblemDto,
 ) {
   const response = await fetchProblemMutation(`${API_BASE_URL}/problems/${id}`, {
     method: "PATCH",

@@ -13,15 +13,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { TestCase } from './test-case.entity';
-
-/**
- * Difficulty bucket used to classify problems for assessment composition.
- */
-export enum Difficulty {
-  EASY = 'easy',
-  MEDIUM = 'medium',
-  HARD = 'hard',
-}
+import { Difficulty } from '../enums/difficulty.enum';
 
 /**
  * Technical exercise created by a recruiter and reused in assessments.

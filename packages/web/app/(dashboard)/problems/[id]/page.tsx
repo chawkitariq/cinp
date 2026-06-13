@@ -28,7 +28,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { getProblem } from "@/api/problems";
 import { formatDate } from "@/utils/date";
-import type { Difficulty } from "@cinp/api";
+import { Difficulty } from "@cinp/api";
 
 /**
  * Always render fresh problem detail data from the local API.
@@ -39,9 +39,9 @@ export const dynamic = "force-dynamic";
  * French display labels for API difficulty values.
  */
 const difficultyLabels: Record<Difficulty, string> = {
-  easy: "Facile",
-  medium: "Intermediaire",
-  hard: "Difficile",
+  [Difficulty.EASY]: "Facile",
+  [Difficulty.MEDIUM]: "Intermediaire",
+  [Difficulty.HARD]: "Difficile",
 };
 
 /**
@@ -51,9 +51,9 @@ const difficultyVariants: Record<
   Difficulty,
   ComponentProps<typeof Badge>["variant"]
 > = {
-  easy: "secondary",
-  medium: "outline",
-  hard: "destructive",
+  [Difficulty.EASY]: "secondary",
+  [Difficulty.MEDIUM]: "outline",
+  [Difficulty.HARD]: "destructive",
 };
 
 /**

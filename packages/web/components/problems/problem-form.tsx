@@ -37,21 +37,21 @@ import {
 } from "@/components/ui/select";
 import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  createProblem,
-  updateProblem,
-  type ProblemMutationPayload,
-} from "@/api/problems";
+import { createProblem, updateProblem } from "@/api/problems";
 import { useMonacoEditor } from "@/hooks/use-monaco-editor";
-import type { Problem } from "@cinp/api";
+import {
+  Difficulty,
+  type CreateProblemDto,
+  type Problem,
+} from "@cinp/api";
 
 /**
  * Accepted difficulty literals for the problem form and API payload.
  */
 const difficultyValues = [
-  "easy",
-  "medium",
-  "hard",
+  Difficulty.EASY,
+  Difficulty.MEDIUM,
+  Difficulty.HARD,
 ] as const;
 
 /**
@@ -74,6 +74,7 @@ const problemSchema = z.object({
     .string()
     .trim()
     .min(20, "La description doit contenir au moins 20 caracteres."),
+  createdById: z.string().uuid("L'id createur doit etre un UUID valide."),
   examples: z.string().superRefine((value, context) => {
     const trimmedValue = value.trim();
 
@@ -122,8 +123,9 @@ type ProblemFormProps =
 const emptyValues: ProblemFormValues = {
   title: "",
   slug: "",
-  difficulty: "easy",
+  difficulty: Difficulty.EASY,
   description: "",
+  createdById: "",
   examples: "",
   constraints: "",
   starterCode: "",
@@ -141,14 +143,14 @@ function getOptionalString(value: string) {
 /**
  * Parses the examples JSON textarea into the API examples array.
  */
-function getExamples(value: string) {
+function getExamples(value: string): CreateProblemDto["examples"] {
   const trimmedValue = value.trim();
 
   if (!trimmedValue) {
     return undefined;
   }
 
-  return JSON.parse(trimmedValue) as Record<string, unknown>[];
+  return JSON.parse(trimmedValue) as CreateProblemDto["examples"];
 }
 
 /**
@@ -164,6 +166,7 @@ function getDefaultValues(problem?: Problem): ProblemFormValues {
     slug: problem.slug,
     difficulty: problem.difficulty as ProblemFormValues["difficulty"],
     description: problem.description,
+    createdById: problem.createdById,
     examples: problem.examples?.length
       ? JSON.stringify(problem.examples, null, 2)
       : "",
@@ -175,12 +178,13 @@ function getDefaultValues(problem?: Problem): ProblemFormValues {
 /**
  * Builds the create/update payload expected by the problem API.
  */
-function getPayload(values: ProblemFormValues): ProblemMutationPayload {
+function getPayload(values: ProblemFormValues): CreateProblemDto {
   return {
     title: values.title.trim(),
     slug: values.slug.trim(),
-    difficulty: values.difficulty as ProblemMutationPayload["difficulty"],
+    difficulty: values.difficulty,
     description: values.description.trim(),
+    createdById: values.createdById.trim(),
     examples: getExamples(values.examples),
     constraints: getOptionalString(values.constraints),
     starterCode: getOptionalString(values.starterCode),
@@ -338,11 +342,13 @@ export function ProblemForm({
                         </SelectTrigger>
                         <SelectContent>
                           <SelectGroup>
-                            <SelectItem value="easy">Facile</SelectItem>
-                            <SelectItem value="medium">
+                            <SelectItem value={Difficulty.EASY}>Facile</SelectItem>
+                            <SelectItem value={Difficulty.MEDIUM}>
                               Intermediaire
                             </SelectItem>
-                            <SelectItem value="hard">Difficile</SelectItem>
+                            <SelectItem value={Difficulty.HARD}>
+                              Difficile
+                            </SelectItem>
                           </SelectGroup>
                         </SelectContent>
                       </Select>
@@ -351,6 +357,20 @@ export function ProblemForm({
                   )}
                 />
               </FieldGroup>
+
+              <Field data-invalid={Boolean(errors.createdById)}>
+                <FieldLabel htmlFor="createdById">ID createur</FieldLabel>
+                <Input
+                  {...register("createdById")}
+                  aria-invalid={Boolean(errors.createdById)}
+                  id="createdById"
+                  placeholder="00000000-0000-0000-0000-000000000000"
+                />
+                <FieldDescription>
+                  UUID du recruteur proprietaire du probleme.
+                </FieldDescription>
+                <FieldError>{errors.createdById?.message}</FieldError>
+              </Field>
 
               <Field data-invalid={Boolean(errors.description)}>
                 <FieldLabel htmlFor="description">Description</FieldLabel>
