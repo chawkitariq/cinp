@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { Trash2Icon } from "lucide-react";
 import { useState } from "react";
 
+import { ConfirmDialog } from "@/components/customs/confirm-dialog";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { API_BASE_URL } from "@/constants/api";
@@ -18,9 +19,11 @@ export function DeleteProblemButton({ problemId }: { problemId: string }) {
   const [isDeleting, setIsDeleting] = useState(false);
 
   async function deleteProblem() {
-    const confirmed = window.confirm(
-      "Supprimer ce probleme ? Cette action est definitive.",
-    );
+    const confirmed = await ConfirmDialog.call({
+      title: "Supprimer ce probleme ?",
+      description: "Cette action est definitive.",
+      confirmLabel: "Supprimer",
+    });
 
     if (!confirmed) {
       return;
