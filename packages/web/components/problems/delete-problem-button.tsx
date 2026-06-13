@@ -8,6 +8,7 @@ import { ConfirmDialog } from "@/components/customs/confirm-dialog";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { deleteProblem as deleteProblemById } from "@/api/problems";
+import { genericUserErrorMessage } from "@/utils/api-error";
 
 /**
  * Client action button that confirms and deletes a problem by UUID.
@@ -39,7 +40,7 @@ export function DeleteProblemButton({ problemId }: { problemId: string }) {
       setError(
         error instanceof Error
           ? error.message
-          : "Impossible de joindre l'API. Verifie que le serveur NestJS est lance.",
+          : genericUserErrorMessage,
       );
     } finally {
       setIsDeleting(false);

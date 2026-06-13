@@ -1,11 +1,11 @@
 import { notFound } from "next/navigation";
 
 import { API_BASE_URL } from "@/constants/api";
-import { getApiErrorMessage } from "@/utils/api-error";
+import {
+  getApiErrorMessage,
+  serviceUnavailableMessage,
+} from "@/utils/api-error";
 import type { CreateProblemDto, Problem, UpdateProblemDto } from "@cinp/api";
-
-const apiUnavailableMessage =
-  "Impossible de joindre l'API. Verifie que le serveur NestJS est lance.";
 
 async function fetchProblemMutation(
   input: string,
@@ -14,7 +14,7 @@ async function fetchProblemMutation(
   try {
     return await fetch(input, init);
   } catch {
-    throw new Error(apiUnavailableMessage);
+    throw new Error(serviceUnavailableMessage);
   }
 }
 
@@ -57,14 +57,14 @@ export async function getProblems(): Promise<ProblemsResult> {
   } catch {
     return {
       ok: false,
-      message: apiUnavailableMessage,
+      message: serviceUnavailableMessage,
     };
   }
 
   if (!response.ok) {
     return {
       ok: false,
-      message: `L'API a retourne une erreur ${response.status}.`,
+      message: getApiErrorMessage(response),
     };
   }
 
@@ -86,7 +86,7 @@ export async function getProblem(id: string): Promise<ProblemResult> {
   } catch {
     return {
       ok: false,
-      message: apiUnavailableMessage,
+      message: serviceUnavailableMessage,
     };
   }
 
@@ -97,7 +97,7 @@ export async function getProblem(id: string): Promise<ProblemResult> {
   if (!response.ok) {
     return {
       ok: false,
-      message: `L'API a retourne une erreur ${response.status}.`,
+      message: getApiErrorMessage(response),
     };
   }
 

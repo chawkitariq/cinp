@@ -39,6 +39,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
 import { createProblem, updateProblem } from "@/api/problems";
 import { useMonacoEditor } from "@/hooks/use-monaco-editor";
+import { genericUserErrorMessage } from "@/utils/api-error";
 import {
   Difficulty,
   type CreateProblemDto,
@@ -274,7 +275,7 @@ export function ProblemForm({
       setSubmitError(
         error instanceof Error
           ? error.message
-          : "Impossible de joindre l'API. Verifie que le serveur NestJS est lance.",
+          : genericUserErrorMessage,
       );
     }
   }
