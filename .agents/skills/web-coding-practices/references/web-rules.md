@@ -69,6 +69,10 @@ Use these rules as the detailed reference for `skills/web-coding-practices/SKILL
 
 - Follow `skills/project-coding-practices/references/common-rules.md` for shared-contract ownership, package boundaries, and no-duplication rules.
 - Import shared types from `@cinp/api`, preferably with `import type`.
+- Use API DTOs from `@cinp/api` for web request bodies. For example, a create helper should accept `CreateProblemDto`, not a locally declared `ProblemPayload`.
+- Use API entities, read models, response interfaces, and enums from `@cinp/api` for API responses and UI mappings. Do not copy enum literal unions such as `"easy" | "medium" | "hard"` in web.
+- If a needed contract is missing from `@cinp/api`, add the export in `packages/api/src/index.ts` instead of defining a replacement in web.
+- Use regular imports from `@cinp/api` only for lightweight runtime-safe values intentionally exported by API, such as standalone enums. Keep DTOs, entities, and server-backed classes type-only in web.
 - Keep API endpoint base values centralized in `constants/api.ts` instead of scattering literals across routes.
 - Use plural API resource paths that match the NestJS controllers, such as `/problems`, `/users`, `/assessments`, `/assessment-sessions`, and `/submissions`.
 - Add or update JSDoc for frontend data mappers, read models, and API-facing helper functions whenever they encode serialization differences, fallback behavior, or assumptions about `@cinp/api` contracts.
@@ -77,6 +81,7 @@ Use these rules as the detailed reference for `skills/web-coding-practices/SKILL
 
 - Keep React Hook Form and Zod usage inside client components.
 - Keep validation schemas close to the form unless the same schema is reused across multiple routes.
+- Form value types may stay local when they represent UI-only state such as textarea JSON strings, but the submitted payload must be typed as the API DTO.
 - Extract reusable effect-heavy integrations, such as Monaco editor setup, into hooks.
 - Keep submit handlers responsible for shaping request payloads, handling API errors, and routing after success.
 - Prefer small local helpers for one-page payload shaping; move them to `utils/` only when another route needs the same behavior.
@@ -104,9 +109,14 @@ pnpm --filter web build
 
 - `lint` is the default verification for ordinary component, hook, util, and styling changes.
 - Add `build` when the change affects routing, client/server boundaries, dynamic imports, shared contracts, or Next.js configuration.
-- After changing shared contracts in `packages/api`, build API before validating web:
+- After changing shared contracts in `packages/api`, build API before validating web. If normal build is blocked by local `dist` permissions, use the no-emit type-check as the API verification fallback:
 
 ```bash
 pnpm --filter api build
+pnpm --filter web build
+```
+
+```bash
+pnpm --filter api exec tsc -p tsconfig.build.json --noEmit
 pnpm --filter web build
 ```

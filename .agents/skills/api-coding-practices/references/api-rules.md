@@ -32,15 +32,19 @@ Use these rules as the detailed reference for `skills/api-coding-practices/SKILL
 - Follow `skills/project-coding-practices/references/common-rules.md` for ownership, package boundaries, and no-duplication rules.
 - Ensure `packages/api/package.json` publishes the public type entry through `types` and `exports`.
 - Add `@cinp/api` to `packages/web/package.json` with `workspace:*` when web needs API contracts.
+- Treat `packages/api` as the source of truth for web request bodies and responses. When web sends data to an endpoint, export and reuse the endpoint DTO (`Create*Dto`, `Update*Dto`, etc.) instead of defining a web-local payload type.
+- Export every web-consumed DTO, enum, entity, response interface, and read model from `packages/api/src/index.ts`; do not make web reach into API internals.
+- Prefer `export type { ... }` for DTOs, entities, and server-backed classes. Use value exports only for runtime-safe contracts that web must use as values.
+- Put web-consumed runtime enums in lightweight files such as `src/<domain>/enums/*.enum.ts`, then import them into entities/DTOs and export them publicly. Avoid defining runtime enums only inside TypeORM entity files when a client component needs the enum values.
 - In web code, import from the package boundary:
 
 ```ts
-import type { Difficulty, Problem } from '@cinp/api';
+import { Difficulty, type CreateProblemDto, type Problem } from '@cinp/api';
 ```
 
-- Prefer `import type` in `packages/web` so Next.js does not bundle server-side NestJS/TypeORM code through shared contracts.
+- Prefer `import type` in `packages/web` so Next.js does not bundle server-side NestJS/TypeORM code through shared contracts. Use regular imports only for lightweight runtime values exported intentionally for web, such as standalone enums.
 - The current public API surface is intentionally small. If web needs more than the existing exports, add the missing contract explicitly in `packages/api/src/index.ts` instead of reaching into internal files.
-- After changing shared exports, build API before validating web: `pnpm --filter api build`, then `pnpm --filter web build`.
+- After changing shared exports, build API before validating web. If normal build is blocked by local `dist` permissions, use `pnpm --filter api exec tsc -p tsconfig.build.json --noEmit` as the API verification fallback, then run `pnpm --filter web build`.
 
 ## Services And Repositories
 

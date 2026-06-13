@@ -14,7 +14,7 @@ Apply the repository-wide coding practices that are common to both API and web w
 1. Inspect nearby files and current repository patterns before editing.
 2. Prefer the smallest coherent change that solves the task.
 3. Keep package boundaries explicit. Use public workspace package exports instead of deep imports across packages.
-4. Keep shared API contracts owned by `packages/api` and consumed by `packages/web` through `@cinp/api`.
+4. Keep shared API contracts owned by `packages/api` and consumed by `packages/web` through `@cinp/api`; do not re-declare DTOs, enums, payloads, or entity/read-model shapes in web.
 5. Put logic where it naturally belongs now; extract helpers only for real reuse, shared ownership, or meaningful complexity reduction.
 6. Add or update concise JSDoc when creating or changing reusable/exported functions, methods, hooks, utilities, constants, enums, DTOs, shared contracts, or public types.
 7. Preserve the current stack and conventions unless the user explicitly asks for a migration.
@@ -36,6 +36,7 @@ Read `references/common-rules.md` when:
 ## Strong Defaults
 
 - Do not duplicate contracts, enums, DTOs, or response shapes across packages.
+- Do not create web-local payload types for API requests; export and import the matching API DTO or contract instead.
 - Do not import across package internals such as `packages/api/src/...` from web.
 - Do not introduce major tools from `docs/mvp.md` unless they already exist or the task asks for them.
 - Do not mix unrelated cleanup with feature work.

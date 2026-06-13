@@ -16,12 +16,13 @@ Apply the coding rules established by the current repository state. Treat these 
 3. Keep the NestJS domain structure: `controller`, `service`, `module`, `dto`, `entities`, and colocated `*.spec.ts` tests.
 4. Keep controllers thin. Use plural resource routes, parse, and delegate; put business logic, persistence, and application errors in services.
 5. Use DTOs for all request bodies. Add `class-validator` decorators and keep `Update*Dto extends PartialType(Create*Dto)`.
-6. Add or update JSDoc for DTOs, exported enums, entities, service methods with reusable business behavior, and public contracts consumed by `packages/web`.
-7. Use TypeORM repositories through `TypeOrmModule.forFeature([Entity])` and constructor injection in services.
-8. Preserve DB naming conventions: plural table names, DB `snake_case`, TypeScript `camelCase`, and UUID identifiers.
-9. Verify TypeORM relation cardinality and inverse sides before adding or changing relations.
-10. Align TypeScript optionality with DB nullability.
-11. Run focused verification with the current monorepo commands, usually `pnpm --filter api build`, `pnpm --filter api test -- --runInBand`, and `pnpm --filter api lint` when practical.
+6. Export DTOs, enums, entities, and read-model contracts consumed by `packages/web` through `packages/api/src/index.ts`; API is the source of truth for web request/response types.
+7. Add or update JSDoc for DTOs, exported enums, entities, service methods with reusable business behavior, and public contracts consumed by `packages/web`.
+8. Use TypeORM repositories through `TypeOrmModule.forFeature([Entity])` and constructor injection in services.
+9. Preserve DB naming conventions: plural table names, DB `snake_case`, TypeScript `camelCase`, and UUID identifiers.
+10. Verify TypeORM relation cardinality and inverse sides before adding or changing relations.
+11. Align TypeScript optionality with DB nullability.
+12. Run focused verification with the current monorepo commands, usually `pnpm --filter api build`, `pnpm --filter api test -- --runInBand`, and `pnpm --filter api lint` when practical.
 
 ## Load Detailed Rules
 
@@ -44,5 +45,6 @@ Also read `../project-coding-practices/references/common-rules.md` when the API 
 - Do not point TypeORM inverse relation callbacks at `.id` fields; point them at relation properties.
 - Do not assume the MVP document means Prisma, Redis, BullMQ, TanStack Query, or other tools are already part of the live stack.
 - Prefer exported string enums for API/DB-facing statuses and categories.
+- Keep web-consumed runtime enums in lightweight API contract files and export them publicly; avoid forcing client bundles to import server-heavy entity modules.
 - Treat `synchronize=true` as development-only.
 - Keep JSDoc current on reusable API surfaces; remove commented-out placeholder relations.

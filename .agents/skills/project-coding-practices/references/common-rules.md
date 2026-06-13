@@ -21,12 +21,15 @@ Use these rules as the shared baseline for coding work in the `cinp` monorepo. P
 
 ## Shared API Contracts
 
-- Treat `packages/api` as the owner of API entities, DTOs, enums, and response/read-model contracts.
-- Expose web-consumed contracts from `packages/api/src/index.ts`.
-- Import shared contracts in `packages/web` from `@cinp/api`, preferably with `import type`.
-- Do not duplicate API shapes in web files.
+- Treat `packages/api` as the only source of truth for API entities, DTOs, enums, request payloads, and response/read-model contracts consumed by web.
+- Expose every web-consumed contract from `packages/api/src/index.ts`; never deep-import from `packages/api/src/...` in web.
+- Import shared contracts in `packages/web` from `@cinp/api`, preferably with `import type` for type-only usage.
+- Do not duplicate API shapes in web files. Avoid web-local `*Payload`, copied enum literal unions, copied DTO interfaces, or hand-written response models when an API contract exists or should be exported.
+- Type web API helpers with API DTOs for request bodies, such as `Create*Dto` and `Update*Dto`, and API entities/read models for responses.
+- Keep API-facing enums that the web needs at runtime in lightweight API contract files, not only inside server-heavy modules, then export them from `packages/api/src/index.ts`.
+- Use value imports from `@cinp/api` in client components only for lightweight runtime-safe exports such as standalone enums. Keep NestJS, TypeORM entities, decorators, and server-only classes type-only in web.
 - Model HTTP JSON differences explicitly when they differ from backend runtime entities, especially `Date` fields serialized as strings.
-- After changing shared contracts, build API before validating web.
+- After changing shared contracts, build or type-check API before validating web.
 
 ## Code Organization
 
