@@ -18,6 +18,10 @@ export function getApiErrorMessage(response: Response) {
     return "Certaines informations sont invalides. Verifie le formulaire et reessaie.";
   }
 
+  if (response.status === 401) {
+    return "Identifiants invalides. Verifie ton email et ton mot de passe.";
+  }
+
   if (response.status === 404) {
     return "L'element demande est introuvable.";
   }
