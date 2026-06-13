@@ -1,0 +1,4 @@
+interface:
+  display_name: "Test NestJS API"
+  short_description: "NestJS Jest testing rules for API"
+  default_prompt: "Use $test-nestjs-api to add focused Jest tests for a NestJS API service, controller, guard, or e2e flow."

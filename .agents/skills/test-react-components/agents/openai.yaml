@@ -1,0 +1,4 @@
+interface:
+  display_name: "Test React Components"
+  short_description: "Jest and RTL testing rules for web"
+  default_prompt: "Use $test-react-components to add focused Jest and React Testing Library tests for a web component."
