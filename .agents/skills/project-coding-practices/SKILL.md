@@ -38,6 +38,7 @@ Read `references/common-rules.md` when:
 - Do not duplicate contracts, enums, DTOs, or response shapes across packages.
 - Do not create web-local payload types for API requests; export and import the matching API DTO or contract instead.
 - Do not import across package internals such as `packages/api/src/...` from web.
+- Do not show developer- or infrastructure-focused failures in the UI; map them to user-friendly product messages.
 - Do not introduce major tools from `docs/mvp.md` unless they already exist or the task asks for them.
 - Do not mix unrelated cleanup with feature work.
 - Keep comments short and useful; JSDoc is expected on reusable or contract-level code, but avoid restating obvious types.

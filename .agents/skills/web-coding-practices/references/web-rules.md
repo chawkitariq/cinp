@@ -77,6 +77,13 @@ Use these rules as the detailed reference for `skills/web-coding-practices/SKILL
 - Use plural API resource paths that match the NestJS controllers, such as `/problems`, `/users`, `/assessments`, `/assessment-sessions`, and `/submissions`.
 - Add or update JSDoc for frontend data mappers, read models, and API-facing helper functions whenever they encode serialization differences, fallback behavior, or assumptions about `@cinp/api` contracts.
 
+## User-Facing Errors
+
+- Never display raw technical failure text in UI, such as API names, framework names, server startup hints, status-code-only messages, URLs, stack details, or backend exception strings.
+- Map request failures through shared frontend helpers before passing messages to pages, alerts, forms, toasts, or dialogs.
+- Prefer short product-facing copy that says what happened and what the user can do next, for example retrying later or checking form fields.
+- Keep technical wording in developer logs or diagnostics only; visible copy should not mention NestJS, local servers, HTTP internals, or implementation details.
+
 ## Forms And Client Logic
 
 - Keep React Hook Form and Zod usage inside client components.

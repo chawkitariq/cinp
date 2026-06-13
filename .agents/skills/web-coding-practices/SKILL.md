@@ -43,4 +43,5 @@ Also read `../project-coding-practices/references/common-rules.md` when the web 
 - Do not add new design systems, icon packs, or CSS conventions when the existing shadcn and Tailwind setup already covers the need.
 - Do not bypass `constants/` for repeated environment-derived URLs or fixed config values.
 - Do not define web-local API payload or enum types when `packages/api` can export the DTO, enum, entity, or read model.
+- Do not display raw API, framework, server, or infrastructure errors in UI; use user-friendly copy from shared error helpers.
 - Keep JSDoc short and in English; document reusable frontend APIs and contracts without restating obvious prop or return types.

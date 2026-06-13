@@ -16,6 +16,7 @@ Use these rules as the detailed reference for `skills/api-coding-practices/SKILL
 - When adding or changing a resource endpoint, update frontend fetch callers to use the same plural path.
 - Parse route ids explicitly. Prefer Nest pipes such as `ParseUUIDPipe` for UUID ids instead of `+id`, because entities use UUID primary keys.
 - Return service results directly unless a response shape transformation is required.
+- Do not assume Nest exception messages are safe UI copy. Keep frontend-visible error mapping in web helpers unless an explicit API response contract is designed for user-facing copy.
 
 ## DTOs And Validation
 

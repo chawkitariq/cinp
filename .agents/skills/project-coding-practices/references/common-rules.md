@@ -39,6 +39,13 @@ Use these rules as the shared baseline for coding work in the `cinp` monorepo. P
 - Prefer existing helper folders and local conventions over creating new categories.
 - Keep names concrete and domain-oriented.
 
+## User-Facing Errors
+
+- Do not display developer- or infrastructure-focused messages in the UI, including raw service names, framework names, stack details, server process hints, URLs, status-code-only text, or exception messages.
+- Map network, HTTP, and unexpected failures to product-facing messages that explain the user impact and a reasonable next action.
+- Keep technical detail available only in logs, diagnostics, tests, or developer tooling; do not rely on backend exception text as frontend copy.
+- Centralize reusable UI error mapping in frontend helpers so pages and components do not invent inconsistent messages.
+
 ## Dependencies And External Docs
 
 - Do not add dependencies without a strong task-driven reason.
