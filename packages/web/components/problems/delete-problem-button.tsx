@@ -30,7 +30,7 @@ export function DeleteProblemButton({ problemId }: { problemId: string }) {
     setIsDeleting(true);
 
     try {
-      const response = await fetch(`${API_BASE_URL}/problem/${problemId}`, {
+      const response = await fetch(`${API_BASE_URL}/problems/${problemId}`, {
         method: "DELETE",
       });
 

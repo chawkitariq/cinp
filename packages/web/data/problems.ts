@@ -36,7 +36,7 @@ export async function getProblems(): Promise<ProblemsResult> {
   let response: Response;
 
   try {
-    response = await fetch(`${API_BASE_URL}/problem`, {
+    response = await fetch(`${API_BASE_URL}/problems`, {
       cache: "no-store",
     });
   } catch {
@@ -66,7 +66,7 @@ export async function getProblem(id: string): Promise<ProblemResult> {
   let response: Response;
 
   try {
-    response = await fetch(`${API_BASE_URL}/problem/${id}`, {
+    response = await fetch(`${API_BASE_URL}/problems/${id}`, {
       cache: "no-store",
     });
   } catch {

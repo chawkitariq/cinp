@@ -254,8 +254,8 @@ export function ProblemForm({
     try {
       const response = await fetch(
         isEdit
-          ? `${API_BASE_URL}/problem/${problem.id}`
-          : `${API_BASE_URL}/problem`,
+          ? `${API_BASE_URL}/problems/${problem.id}`
+          : `${API_BASE_URL}/problems`,
         {
           method: isEdit ? "PATCH" : "POST",
           headers: {
