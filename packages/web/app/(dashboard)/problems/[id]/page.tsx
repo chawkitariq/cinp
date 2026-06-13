@@ -26,7 +26,7 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 import { Separator } from "@/components/ui/separator";
-import { getProblem } from "@/data/problems";
+import { getProblem } from "@/api/problems";
 import { formatDate } from "@/utils/date";
 import type { Difficulty } from "@cinp/api";
 

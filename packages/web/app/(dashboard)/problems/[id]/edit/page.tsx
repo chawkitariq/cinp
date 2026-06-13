@@ -10,7 +10,7 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty";
-import { getProblem } from "@/data/problems";
+import { getProblem } from "@/api/problems";
 
 /**
  * Always render fresh problem edit data from the local API.

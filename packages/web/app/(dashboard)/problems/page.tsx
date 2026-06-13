@@ -27,7 +27,7 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty";
-import { getProblems } from "@/data/problems";
+import { getProblems } from "@/api/problems";
 import { formatDate } from "@/utils/date";
 import type { Difficulty } from "@cinp/api";
 

@@ -7,8 +7,7 @@ import { useState } from "react";
 import { ConfirmDialog } from "@/components/customs/confirm-dialog";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import { API_BASE_URL } from "@/constants/api";
-import { getApiErrorMessage } from "@/utils/api-error";
+import { deleteProblem as deleteProblemById } from "@/api/problems";
 
 /**
  * Client action button that confirms and deletes a problem by UUID.
@@ -33,20 +32,14 @@ export function DeleteProblemButton({ problemId }: { problemId: string }) {
     setIsDeleting(true);
 
     try {
-      const response = await fetch(`${API_BASE_URL}/problems/${problemId}`, {
-        method: "DELETE",
-      });
-
-      if (!response.ok) {
-        setError(await getApiErrorMessage(response));
-        return;
-      }
-
+      await deleteProblemById(problemId);
       router.push("/problems");
       router.refresh();
-    } catch {
+    } catch (error) {
       setError(
-        "Impossible de joindre l'API. Verifie que le serveur NestJS est lance.",
+        error instanceof Error
+          ? error.message
+          : "Impossible de joindre l'API. Verifie que le serveur NestJS est lance.",
       );
     } finally {
       setIsDeleting(false);

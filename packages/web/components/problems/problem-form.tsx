@@ -37,15 +37,22 @@ import {
 } from "@/components/ui/select";
 import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
-import { API_BASE_URL } from "@/constants/api";
+import {
+  createProblem,
+  updateProblem,
+  type ProblemMutationPayload,
+} from "@/api/problems";
 import { useMonacoEditor } from "@/hooks/use-monaco-editor";
-import { getApiErrorMessage } from "@/utils/api-error";
 import type { Problem } from "@cinp/api";
 
 /**
  * Accepted difficulty literals for the problem form and API payload.
  */
-const difficultyValues = ["easy", "medium", "hard"] as const;
+const difficultyValues = [
+  "easy",
+  "medium",
+  "hard",
+] as const;
 
 /**
  * Client-side validation schema matching the create/update problem API.
@@ -168,11 +175,11 @@ function getDefaultValues(problem?: Problem): ProblemFormValues {
 /**
  * Builds the create/update payload expected by the problem API.
  */
-function getPayload(values: ProblemFormValues) {
+function getPayload(values: ProblemFormValues): ProblemMutationPayload {
   return {
     title: values.title.trim(),
     slug: values.slug.trim(),
-    difficulty: values.difficulty,
+    difficulty: values.difficulty as ProblemMutationPayload["difficulty"],
     description: values.description.trim(),
     examples: getExamples(values.examples),
     constraints: getOptionalString(values.constraints),
@@ -252,30 +259,18 @@ export function ProblemForm({
     setSubmitError(null);
 
     try {
-      const response = await fetch(
-        isEdit
-          ? `${API_BASE_URL}/problems/${problem.id}`
-          : `${API_BASE_URL}/problems`,
-        {
-          method: isEdit ? "PATCH" : "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(getPayload(values)),
-        },
-      );
+      const payload = getPayload(values);
+      const savedProblem = isEdit
+        ? await updateProblem(problem.id, payload)
+        : await createProblem(payload);
 
-      if (!response.ok) {
-        setSubmitError(await getApiErrorMessage(response));
-        return;
-      }
-
-      const savedProblem = (await response.json()) as Problem;
       router.push(`/problems/${savedProblem.id}`);
       router.refresh();
-    } catch {
+    } catch (error) {
       setSubmitError(
-        "Impossible de joindre l'API. Verifie que le serveur NestJS est lance.",
+        error instanceof Error
+          ? error.message
+          : "Impossible de joindre l'API. Verifie que le serveur NestJS est lance.",
       );
     }
   }
