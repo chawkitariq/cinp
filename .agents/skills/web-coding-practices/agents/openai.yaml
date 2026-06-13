@@ -1,0 +1,4 @@
+interface:
+  display_name: "Web Coding Practices"
+  short_description: "Next.js web app and shared UI rules"
+  default_prompt: "Use $web-coding-practices to implement or review code in packages/web."

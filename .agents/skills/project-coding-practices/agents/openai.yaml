@@ -1,0 +1,4 @@
+interface:
+  display_name: "Project Coding Practices"
+  short_description: "Shared repository coding rules"
+  default_prompt: "Use $project-coding-practices to apply the shared repository coding rules before editing this project."
