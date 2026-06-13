@@ -14,7 +14,7 @@ Apply the coding rules established by the current repository state. Treat these 
 1. Inspect the relevant `packages/api/src/<domain>` files before editing.
 2. Apply `skills/project-coding-practices` for repository-wide workflow, package-boundary, shared-contract, and verification defaults.
 3. Keep the NestJS domain structure: `controller`, `service`, `module`, `dto`, `entities`, and colocated `*.spec.ts` tests.
-4. Keep controllers thin. Route, parse, and delegate; put business logic, persistence, and application errors in services.
+4. Keep controllers thin. Use plural resource routes, parse, and delegate; put business logic, persistence, and application errors in services.
 5. Use DTOs for all request bodies. Add `class-validator` decorators and keep `Update*Dto extends PartialType(Create*Dto)`.
 6. Add or update JSDoc for DTOs, exported enums, entities, service methods with reusable business behavior, and public contracts consumed by `packages/web`.
 7. Use TypeORM repositories through `TypeOrmModule.forFeature([Entity])` and constructor injection in services.

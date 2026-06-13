@@ -70,6 +70,7 @@ Use these rules as the detailed reference for `skills/web-coding-practices/SKILL
 - Follow `skills/project-coding-practices/references/common-rules.md` for shared-contract ownership, package boundaries, and no-duplication rules.
 - Import shared types from `@cinp/api`, preferably with `import type`.
 - Keep API endpoint base values centralized in `constants/api.ts` instead of scattering literals across routes.
+- Use plural API resource paths that match the NestJS controllers, such as `/problems`, `/users`, `/assessments`, `/assessment-sessions`, and `/submissions`.
 - Add or update JSDoc for frontend data mappers, read models, and API-facing helper functions whenever they encode serialization differences, fallback behavior, or assumptions about `@cinp/api` contracts.
 
 ## Forms And Client Logic

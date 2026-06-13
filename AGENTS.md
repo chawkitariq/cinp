@@ -192,7 +192,7 @@ Domaines actuels:
 
 Controllers:
 
-- Routes actuelles au singulier: `user`, `problem`, `assessment`, `assessment-session`, `submission`.
+- Routes de ressources au pluriel: `users`, `problems`, `assessments`, `assessment-sessions`, `submissions`.
 - IDs HTTP en UUID: utiliser `@Param('id', ParseUUIDPipe)`.
 - Retourner les résultats du service sauf transformation volontaire.
 

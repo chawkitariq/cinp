@@ -12,7 +12,8 @@ Use these rules as the detailed reference for `skills/api-coding-practices/SKILL
 
 ## Controllers
 
-- Use route names consistently with the domain. Existing routes are singular (`user`, `problem`, `assessment`, `submission`, `assessment-session`); preserve unless deliberately migrating all routes.
+- Use plural resource route names consistently with the domain: `users`, `problems`, `assessments`, `submissions`, and `assessment-sessions`.
+- When adding or changing a resource endpoint, update frontend fetch callers to use the same plural path.
 - Parse route ids explicitly. Prefer Nest pipes such as `ParseUUIDPipe` for UUID ids instead of `+id`, because entities use UUID primary keys.
 - Return service results directly unless a response shape transformation is required.
 
