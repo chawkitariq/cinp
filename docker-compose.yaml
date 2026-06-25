@@ -1,83 +1,14 @@
-name: cinp
-
-x-node-service: &node-service
-  image: node:24-bookworm-slim
-  working_dir: /workspace
-  environment:
-    COREPACK_ENABLE_PROJECT_SPEC: "0"
-  volumes:
-    - .:/workspace
-    - node_modules:/workspace/node_modules
-    - api_node_modules:/workspace/packages/api/node_modules
-    - web_node_modules:/workspace/packages/web/node_modules
-    - pnpm_store:/pnpm/store
-
 services:
   db:
     image: "postgres:18.4"
-    ports:
-      - 5432:5432
+    volumes:
+      - dbdata:/var/lib/postgresql
     environment:
       POSTGRES_USER: cinp
       POSTGRES_PASSWORD: cinp
       POSTGRES_DB: cinp
-    volumes:
-      - dbdata:/var/lib/postgresql
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U cinp -d cinp"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
-
-  deps:
-    <<: *node-service
-    command: >
-      sh -c "corepack enable
-      && corepack prepare pnpm@11.5.2 --activate
-      && pnpm config set store-dir /pnpm/store
-      && pnpm install --frozen-lockfile"
-
-  api:
-    <<: *node-service
-    command: >
-      sh -c "corepack enable
-      && corepack prepare pnpm@11.5.2 --activate
-      && pnpm config set store-dir /pnpm/store
-      && pnpm --filter @cinp/api start:dev"
-    environment:
-      COREPACK_ENABLE_PROJECT_SPEC: "0"
-    env_file:
-      - ./packages/api/.env
     ports:
-      - 3000:3000
-    depends_on:
-      db:
-        condition: service_healthy
-      deps:
-        condition: service_completed_successfully
-
-  web:
-    <<: *node-service
-    command: >
-      sh -c "corepack enable
-      && corepack prepare pnpm@11.5.2 --activate
-      && pnpm config set store-dir /pnpm/store
-      && pnpm --filter @cinp/web dev --hostname 0.0.0.0 --port 3001"
-    environment:
-      COREPACK_ENABLE_PROJECT_SPEC: "0"
-    env_file:
-      - ./packages/web/.env
-    ports:
-      - 3001:3001
-    depends_on:
-      api:
-        condition: service_started
-      deps:
-        condition: service_completed_successfully
+      - 5432:5432
 
 volumes:
   dbdata:
-  node_modules:
-  api_node_modules:
-  web_node_modules:
-  pnpm_store:
