@@ -75,7 +75,6 @@ const problemSchema = z.object({
     .string()
     .trim()
     .min(20, "La description doit contenir au moins 20 caracteres."),
-  createdById: z.string().uuid("L'id createur doit etre un UUID valide."),
   examples: z.string().superRefine((value, context) => {
     const trimmedValue = value.trim();
 
@@ -126,7 +125,6 @@ const emptyValues: ProblemFormValues = {
   slug: "",
   difficulty: Difficulty.EASY,
   description: "",
-  createdById: "",
   examples: "",
   constraints: "",
   starterCode: "",
@@ -167,7 +165,6 @@ function getDefaultValues(problem?: Problem): ProblemFormValues {
     slug: problem.slug,
     difficulty: problem.difficulty as ProblemFormValues["difficulty"],
     description: problem.description,
-    createdById: problem.createdById,
     examples: problem.examples?.length
       ? JSON.stringify(problem.examples, null, 2)
       : "",
@@ -185,7 +182,6 @@ function getPayload(values: ProblemFormValues): CreateProblemDto {
     slug: values.slug.trim(),
     difficulty: values.difficulty,
     description: values.description.trim(),
-    createdById: values.createdById.trim(),
     examples: getExamples(values.examples),
     constraints: getOptionalString(values.constraints),
     starterCode: getOptionalString(values.starterCode),
@@ -358,20 +354,6 @@ export function ProblemForm({
                   )}
                 />
               </FieldGroup>
-
-              <Field data-invalid={Boolean(errors.createdById)}>
-                <FieldLabel htmlFor="createdById">ID createur</FieldLabel>
-                <Input
-                  {...register("createdById")}
-                  aria-invalid={Boolean(errors.createdById)}
-                  id="createdById"
-                  placeholder="00000000-0000-0000-0000-000000000000"
-                />
-                <FieldDescription>
-                  UUID du recruteur proprietaire du probleme.
-                </FieldDescription>
-                <FieldError>{errors.createdById?.message}</FieldError>
-              </Field>
 
               <Field data-invalid={Boolean(errors.description)}>
                 <FieldLabel htmlFor="description">Description</FieldLabel>

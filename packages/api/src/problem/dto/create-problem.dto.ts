@@ -1,4 +1,4 @@
-import { IsArray, IsEnum, IsOptional, IsString, IsUUID } from 'class-validator';
+import { IsArray, IsEnum, IsOptional, IsString } from 'class-validator';
 import { Difficulty } from '../enums/difficulty.enum';
 
 /**
@@ -36,6 +36,4 @@ export class CreateProblemDto {
   @IsString()
   starterCode?: string;
 
-  @IsUUID()
-  createdById: string;
 }

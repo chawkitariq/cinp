@@ -3,13 +3,12 @@ import {
   IsInt,
   IsOptional,
   IsString,
-  IsUUID,
   Min,
 } from 'class-validator';
 import { AssessmentStatus } from '../entities/assessment.entity';
 
 /**
- * Request contract for creating a recruiter-owned assessment.
+ * Request contract for creating an assessment.
  */
 export class CreateAssessmentDto {
   @IsString()
@@ -33,6 +32,4 @@ export class CreateAssessmentDto {
   @IsEnum(AssessmentStatus)
   status?: AssessmentStatus;
 
-  @IsUUID()
-  createdById: string;
 }
