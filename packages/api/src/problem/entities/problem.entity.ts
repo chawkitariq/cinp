@@ -51,8 +51,8 @@ export class Problem {
   @Column({ name: 'starter_code', nullable: true })
   starterCode?: string;
 
-  @Column({ name: 'created_by_id' })
-  createdById: string;
+  @Column({ name: 'created_by_id', nullable: true })
+  createdById?: string;
 
   @ManyToOne(() => User, (user) => user.createdProblems)
   @JoinColumn({ name: 'created_by_id' })

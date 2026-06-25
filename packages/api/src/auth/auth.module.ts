@@ -35,10 +35,11 @@ import { APP_GUARD } from '@nestjs/core';
   providers: [
     AuthService,
     JwtAuthGuard,
-    {
-      provide: APP_GUARD,
-      useExisting: JwtAuthGuard,
-    },
+    // TODO: re-enable APP_GUARD and creator injection once web auth can provide Me('id').
+    // {
+    //   provide: APP_GUARD,
+    //   useExisting: JwtAuthGuard,
+    // },
   ],
   exports: [AuthService, JwtAuthGuard],
 })

@@ -48,8 +48,8 @@ export class Assessment {
   })
   status: AssessmentStatus;
 
-  @Column({ name: 'created_by_id' })
-  createdById: string;
+  @Column({ name: 'created_by_id', nullable: true })
+  createdById?: string;
 
   @ManyToOne(() => User, (user) => user.createdAssessments)
   @JoinColumn({ name: 'created_by_id' })
