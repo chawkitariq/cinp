@@ -1,5 +1,5 @@
 export { Difficulty } from './problem/enums/difficulty.enum';
-export { AssessmentStatus } from './assessment/entities/assessment.entity';
+export { AssessmentStatus } from './assessment/enums/assessment-status.enum';
 export type { AuthResponse } from './auth/auth.service';
 export type { LoginDto } from './auth/dto/login.dto';
 export type { RegisterDto } from './auth/dto/register.dto';

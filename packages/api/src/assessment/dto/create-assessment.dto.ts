@@ -5,7 +5,7 @@ import {
   IsString,
   Min,
 } from 'class-validator';
-import { AssessmentStatus } from '../entities/assessment.entity';
+import { AssessmentStatus } from '../enums/assessment-status.enum';
 
 /**
  * Request contract for creating an assessment.
@@ -31,5 +31,4 @@ export class CreateAssessmentDto {
   @IsOptional()
   @IsEnum(AssessmentStatus)
   status?: AssessmentStatus;
-
 }

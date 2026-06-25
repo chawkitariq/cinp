@@ -11,15 +11,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { AssessmentProblem } from './assessment-problem.entity';
-
-/**
- * Publication lifecycle for an assessment invitation flow.
- */
-export enum AssessmentStatus {
-  DRAFT = 'draft',
-  ACTIVE = 'active',
-  CLOSED = 'closed',
-}
+import { AssessmentStatus } from '../enums/assessment-status.enum';
 
 /**
  * Timed set of problems assembled by a recruiter for candidates.
