@@ -17,6 +17,7 @@ import {
   Code2Icon,
   GalleryVerticalEndIcon,
   LayoutDashboardIcon,
+  ListChecksIcon,
   TerminalIcon,
 } from "lucide-react"
 
@@ -79,6 +80,24 @@ const data = {
         {
           title: "Nouveau probleme",
           url: "/problems/new",
+        },
+      ],
+    },
+    {
+      title: "Evaluations",
+      url: "/assessments",
+      icon: (
+        <ListChecksIcon
+        />
+      ),
+      items: [
+        {
+          title: "Toutes les evaluations",
+          url: "/assessments",
+        },
+        {
+          title: "Nouvelle evaluation",
+          url: "/assessments/new",
         },
       ],
     },

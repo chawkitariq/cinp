@@ -1,7 +1,11 @@
 export { Difficulty } from './problem/enums/difficulty.enum';
+export { AssessmentStatus } from './assessment/entities/assessment.entity';
 export type { AuthResponse } from './auth/auth.service';
 export type { LoginDto } from './auth/dto/login.dto';
 export type { RegisterDto } from './auth/dto/register.dto';
+export type { CreateAssessmentDto } from './assessment/dto/create-assessment.dto';
+export type { UpdateAssessmentDto } from './assessment/dto/update-assessment.dto';
+export type { Assessment } from './assessment/entities/assessment.entity';
 export type { CreateProblemDto } from './problem/dto/create-problem.dto';
 export type { UpdateProblemDto } from './problem/dto/update-problem.dto';
 export type { Problem } from './problem/entities/problem.entity';
