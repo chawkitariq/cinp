@@ -10,7 +10,6 @@ Instructions pour les agents qui travaillent sur ce dépôt `cinp`.
 - Les skills locaux du dépôt vivent dans `.agents/skills/`.
 - Skills utiles à connaître: `api-coding-practices`, `web-coding-practices`, `web-api-error-policy`, `git-conventions`, `test-nestjs-api`, `test-react-components`.
 - Quand une règle ou une spécification du projet change, mettre à jour aussi les skills locaux concernés dans `.agents/skills/`, puis synchroniser `README.md` et `docs/mvp.md` pour garder les guidelines et la cible produit alignées avec le code actuel.
-- Quand une modification est prête, créer automatiquement un commit en suivant `.agents/skills/git-conventions/` et les conventions Conventional Commits du dépôt.
 
 ## Repo Layout
 
