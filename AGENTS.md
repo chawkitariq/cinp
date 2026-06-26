@@ -9,6 +9,8 @@ Instructions pour les agents qui travaillent sur ce dépôt `cinp`.
 - Objectif produit: créer des problèmes, composer des évaluations, inviter des candidats, lancer des sessions chronométrées, recevoir des soumissions, calculer les résultats.
 - Les skills locaux du dépôt vivent dans `.agents/skills/`.
 - Skills utiles à connaître: `api-coding-practices`, `web-coding-practices`, `web-api-error-policy`, `git-conventions`, `test-nestjs-api`, `test-react-components`.
+- Quand une règle ou une spécification du projet change, mettre à jour aussi les skills locaux concernés dans `.agents/skills/`, puis synchroniser `README.md` et `docs/mvp.md` pour garder les guidelines et la cible produit alignées avec le code actuel.
+- Quand une modification est prête, créer automatiquement un commit en suivant `.agents/skills/git-conventions/` et les conventions Conventional Commits du dépôt.
 
 ## Repo Layout
 
@@ -129,4 +131,3 @@ PORT=3000
 - Utiliser Conventional Commits en anglais.
 - Scopes utiles: `packages/api`, `packages/web`, `docs`, `docker`, `skills`.
 - Avant un commit, lire `.agents/skills/git-conventions/SKILL.md` et, si besoin, sa référence.
-

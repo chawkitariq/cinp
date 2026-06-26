@@ -419,11 +419,17 @@ Duration: 90 min
 Questions: 4
 ```
 
+Dans le MVP actuel, une assessment est construite à partir d'une liste ordonnée
+de problems. L'ordre est conservé côté liaison `AssessmentProblem` et sert à
+présenter la composition du test dans le sens choisi par le recruteur.
+
 ---
 
 ## AssessmentProblem
 
 Table de liaison.
+
+La table porte aussi l'ordre d'affichage des problems dans l'assessment.
 
 Permet :
 
@@ -434,6 +440,8 @@ Problem B
 ```
 
 Un problème peut appartenir à plusieurs évaluations.
+Une évaluation peut donc réutiliser la même bibliothèque de problèmes tout en
+gardant un ordre différent selon le besoin métier.
 
 ---
 
@@ -676,8 +684,9 @@ Pages recruteur :
 * `/problems/:id` : lecture d'un problème.
 * `/problems/:id/edit` : modification d'un problème.
 * `/assessments` : liste des évaluations.
-* `/assessments/new` : création d'une évaluation avec durée et problèmes.
+* `/assessments/new` : création d'une évaluation avec durée et problèmes ordonnés.
 * `/assessments/:id` : détail, problèmes associés, invitations, sessions.
+* `/assessments/:id/edit` : modification d'une évaluation et de ses problèmes associés.
 * `/results` : liste des résultats candidats.
 * `/results/:sessionId` : détail d'une session candidat.
 

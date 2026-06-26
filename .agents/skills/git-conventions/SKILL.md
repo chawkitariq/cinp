@@ -23,6 +23,21 @@ Apply the Git conventions inferred from this repository's history. Prefer these 
 10. Execute `git add` and `git commit` directly when the user wants the agent to create the commit and the staged content is well understood.
 11. Never amend, reset, rebase, force-push, or discard user changes unless explicitly requested.
 
+## Scripts
+
+Use the bundled scripts in `scripts/` when you need a deterministic wrapper for
+the standard Git checks or commit flow:
+
+- `scripts/git-status-short.sh`
+- `scripts/git-staged-diff-stat.sh`
+- `scripts/git-staged-diff.sh`
+- `scripts/git-add.sh`
+- `scripts/git-commit.sh`
+- `scripts/git-log-latest.sh`
+
+Prefer these scripts for the common workflow steps documented below when you
+want a repeatable command entrypoint instead of typing the raw Git command.
+
 ## Load Detailed Rules
 
 Read `references/git-rules.md` when:
