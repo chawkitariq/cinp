@@ -1,0 +1,4 @@
+interface:
+  display_name: "Web API Error Policy"
+  short_description: "Web API error handling rules"
+  default_prompt: "Use $web-api-error-policy to apply the current web API error-handling rules when working on packages/web."
