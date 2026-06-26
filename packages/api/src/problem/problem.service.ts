@@ -40,7 +40,7 @@ export class ProblemService {
    * @throws {NotFoundException} When the problem does not exist.
    */
   async findOne(id: string) {
-    const problem = await this.problemRepository.findOne({ where: { id } });
+    const problem = await this.findOneWithTestCases(id);
 
     if (!problem) {
       throw new NotFoundException(`Problem ${id} not found`);
@@ -85,5 +85,20 @@ export class ProblemService {
     }
 
     return { deleted: true };
+  }
+
+  /**
+   * Loads one problem with its associated test cases.
+   *
+   * @param id The problem UUID to load.
+   * @returns A promise that resolves to the matching problem entity or `null`.
+   */
+  private findOneWithTestCases(id: string) {
+    return this.problemRepository
+      .createQueryBuilder('problem')
+      .leftJoinAndSelect('problem.testCases', 'testCase')
+      .where('problem.id = :id', { id })
+      .orderBy('testCase.createdAt', 'ASC')
+      .getOne();
   }
 }

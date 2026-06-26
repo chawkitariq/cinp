@@ -64,7 +64,9 @@ export class Problem {
   )
   assessments: AssessmentProblem[];
 
-  @OneToMany(() => TestCase, (testCase) => testCase.problem)
+  @OneToMany(() => TestCase, (testCase) => testCase.problem, {
+    cascade: ['insert'],
+  })
   testCases: TestCase[];
 
   @OneToMany(() => Submission, (submission) => submission.problem)

@@ -1,5 +1,13 @@
-import { IsArray, IsEnum, IsOptional, IsString } from 'class-validator';
+import {
+  IsArray,
+  IsEnum,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
+import { Type } from 'class-transformer';
 import { Difficulty } from '../enums/difficulty.enum';
+import { CreateTestCaseDto } from './create-test-case.dto';
 
 /**
  * Request contract for creating a technical problem.
@@ -36,4 +44,12 @@ export class CreateProblemDto {
   @IsString()
   starterCode?: string;
 
+  /**
+   * Optional validation cases created together with the problem.
+   */
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateTestCaseDto)
+  testCases?: CreateTestCaseDto[];
 }

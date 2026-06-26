@@ -7,6 +7,7 @@ export type { CreateAssessmentDto } from './assessment/dto/create-assessment.dto
 export type { UpdateAssessmentDto } from './assessment/dto/update-assessment.dto';
 export type { Assessment } from './assessment/entities/assessment.entity';
 export type { CreateProblemDto } from './problem/dto/create-problem.dto';
+export type { CreateTestCaseDto } from './problem/dto/create-test-case.dto';
 export type { UpdateProblemDto } from './problem/dto/update-problem.dto';
 export type { Problem } from './problem/entities/problem.entity';
 export type { TestCase } from './problem/entities/test-case.entity';
