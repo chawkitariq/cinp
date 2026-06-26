@@ -29,6 +29,10 @@ export class AuthService {
 
   /**
    * Creates a user account and returns a signed bearer token.
+   *
+   * @param registerDto Registration payload validated by NestJS.
+   * @returns A promise that resolves to the signed auth response.
+   * @throws {ConflictException} When the email is already registered.
    */
   async register(registerDto: RegisterDto): Promise<AuthResponse> {
     const email = registerDto.email.toLowerCase();
@@ -52,6 +56,10 @@ export class AuthService {
 
   /**
    * Validates account credentials and returns a signed bearer token.
+   *
+   * @param loginDto Login payload validated by NestJS.
+   * @returns A promise that resolves to the signed auth response.
+   * @throws {UnauthorizedException} When the credentials are invalid.
    */
   async login(loginDto: LoginDto): Promise<AuthResponse> {
     const email = loginDto.email.toLowerCase();
@@ -64,6 +72,12 @@ export class AuthService {
     return this.createAuthResponse(user);
   }
 
+  /**
+   * Builds the authenticated response payload for the given user.
+   *
+   * @param user Persisted user entity to embed in the response.
+   * @returns A promise that resolves to the auth response payload.
+   */
   private async createAuthResponse(user: User): Promise<AuthResponse> {
     const accessToken = await this.jwtService.signAsync({
       sub: user.id,

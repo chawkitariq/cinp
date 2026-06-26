@@ -14,6 +14,9 @@ export class SubmissionService {
 
   /**
    * Records a candidate submission from validated request data.
+   *
+   * @param createSubmissionDto Validated submission creation payload.
+   * @returns A promise that resolves to the saved submission entity.
    */
   create(createSubmissionDto: CreateSubmissionDto) {
     const submission = this.submissionRepository.create(createSubmissionDto);
@@ -22,6 +25,8 @@ export class SubmissionService {
 
   /**
    * Lists all submissions without relation expansion.
+   *
+   * @returns A promise that resolves to every persisted submission entity.
    */
   findAll() {
     return this.submissionRepository.find();
@@ -29,6 +34,10 @@ export class SubmissionService {
 
   /**
    * Finds a submission by UUID or throws when it does not exist.
+   *
+   * @param id The submission UUID to load.
+   * @returns A promise that resolves to the matching submission entity.
+   * @throws {NotFoundException} When the submission does not exist.
    */
   async findOne(id: string) {
     const submission = await this.submissionRepository.findOne({
@@ -44,6 +53,11 @@ export class SubmissionService {
 
   /**
    * Applies partial submission changes through TypeORM preload semantics.
+   *
+   * @param id The UUID of the submission to update.
+   * @param updateSubmissionDto Partial submission payload validated by NestJS.
+   * @returns A promise that resolves to the saved submission entity.
+   * @throws {NotFoundException} When the submission does not exist.
    */
   async update(id: string, updateSubmissionDto: UpdateSubmissionDto) {
     const submission = await this.submissionRepository.preload({
@@ -60,6 +74,10 @@ export class SubmissionService {
 
   /**
    * Deletes a submission by UUID and reports whether a row was removed.
+   *
+   * @param id The UUID of the submission to delete.
+   * @returns A promise that resolves to a deletion confirmation payload.
+   * @throws {NotFoundException} When the submission does not exist.
    */
   async remove(id: string) {
     const result = await this.submissionRepository.delete(id);

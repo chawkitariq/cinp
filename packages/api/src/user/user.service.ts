@@ -18,6 +18,10 @@ export class UserService {
 
   /**
    * Creates a user account after enforcing unique email ownership.
+   *
+   * @param createUserDto Validated user creation payload.
+   * @returns A promise that resolves to the saved user entity.
+   * @throws {ConflictException} When another account already uses the email.
    */
   async create(createUserDto: CreateUserDto) {
     const existingUser = await this.userRepository.findOne({
@@ -34,6 +38,8 @@ export class UserService {
 
   /**
    * Lists all non-filtered user records visible to the repository.
+   *
+   * @returns A promise that resolves to every persisted user entity.
    */
   findAll() {
     return this.userRepository.find();
@@ -41,6 +47,10 @@ export class UserService {
 
   /**
    * Finds a user by UUID or throws when the account does not exist.
+   *
+   * @param id The user UUID to load.
+   * @returns A promise that resolves to the matching user entity.
+   * @throws {NotFoundException} When the user does not exist.
    */
   async findOne(id: string) {
     const user = await this.userRepository.findOne({ where: { id } });
@@ -54,6 +64,12 @@ export class UserService {
 
   /**
    * Updates a user while preventing email collisions with other accounts.
+   *
+   * @param id The UUID of the user to update.
+   * @param updateUserDto Partial user payload validated by NestJS.
+   * @returns A promise that resolves to the saved user entity.
+   * @throws {ConflictException} When another account already uses the email.
+   * @throws {NotFoundException} When the user does not exist.
    */
   async update(id: string, updateUserDto: UpdateUserDto) {
     if (updateUserDto.email) {
@@ -80,6 +96,10 @@ export class UserService {
 
   /**
    * Soft-deletes a user account after verifying it exists.
+   *
+   * @param id The UUID of the user to delete.
+   * @returns A promise that resolves to a deletion confirmation payload.
+   * @throws {NotFoundException} When the user does not exist.
    */
   async remove(id: string) {
     const user = await this.findOne(id);

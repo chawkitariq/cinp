@@ -7,6 +7,8 @@ export class AppController {
 
   /**
    * Returns the root API greeting.
+   *
+   * @returns The API greeting string.
    */
   @Get()
   getHello(): string {

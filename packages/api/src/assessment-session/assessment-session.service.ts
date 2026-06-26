@@ -14,6 +14,9 @@ export class AssessmentSessionService {
 
   /**
    * Creates a candidate session and converts incoming ISO date strings to dates.
+   *
+   * @param createAssessmentSessionDto Validated session creation payload.
+   * @returns A promise that resolves to the saved assessment session.
    */
   create(createAssessmentSessionDto: CreateAssessmentSessionDto) {
     const assessmentSession = this.assessmentSessionRepository.create(
@@ -24,6 +27,8 @@ export class AssessmentSessionService {
 
   /**
    * Lists all assessment sessions without relation expansion.
+   *
+   * @returns A promise that resolves to every persisted assessment session entity.
    */
   findAll() {
     return this.assessmentSessionRepository.find();
@@ -31,6 +36,10 @@ export class AssessmentSessionService {
 
   /**
    * Finds a session by UUID or throws when the invitation does not exist.
+   *
+   * @param id The session UUID to load.
+   * @returns A promise that resolves to the matching assessment session entity.
+   * @throws {NotFoundException} When the session does not exist.
    */
   async findOne(id: string) {
     const assessmentSession = await this.assessmentSessionRepository.findOne({
@@ -46,6 +55,11 @@ export class AssessmentSessionService {
 
   /**
    * Applies partial session changes and preserves TypeORM not-found semantics.
+   *
+   * @param id The UUID of the session to update.
+   * @param updateAssessmentSessionDto Partial session payload validated by NestJS.
+   * @returns A promise that resolves to the saved assessment session.
+   * @throws {NotFoundException} When the session does not exist.
    */
   async update(
     id: string,
@@ -65,6 +79,10 @@ export class AssessmentSessionService {
 
   /**
    * Deletes a session by UUID and reports whether a row was removed.
+   *
+   * @param id The UUID of the session to delete.
+   * @returns A promise that resolves to a deletion confirmation payload.
+   * @throws {NotFoundException} When the session does not exist.
    */
   async remove(id: string) {
     const result = await this.assessmentSessionRepository.delete(id);
@@ -78,6 +96,9 @@ export class AssessmentSessionService {
 
   /**
    * Maps DTO date strings to entity date values for persistence.
+   *
+   * @param dto Session DTO containing optional ISO date strings.
+   * @returns A partial entity payload with native `Date` values.
    */
   private toEntity(
     dto: CreateAssessmentSessionDto | UpdateAssessmentSessionDto,

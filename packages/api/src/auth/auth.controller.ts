@@ -17,6 +17,9 @@ export class AuthController {
 
   /**
    * Registers a user account and returns a JWT access token.
+   *
+   * @param registerDto Registration payload accepted by the auth service.
+   * @returns A promise that resolves to the signed auth response.
    */
   @Public()
   @Post('register')
@@ -26,6 +29,9 @@ export class AuthController {
 
   /**
    * Authenticates an existing user and returns a JWT access token.
+   *
+   * @param loginDto Login payload accepted by the auth service.
+   * @returns A promise that resolves to the signed auth response.
    */
   @Public()
   @Post('login')

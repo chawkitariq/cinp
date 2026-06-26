@@ -14,6 +14,9 @@ export class ProblemService {
 
   /**
    * Creates a reusable technical problem from validated request data.
+   *
+   * @param createProblemDto Validated problem creation payload.
+   * @returns A promise that resolves to the saved problem entity.
    */
   create(createProblemDto: CreateProblemDto) {
     const problem = this.problemRepository.create(createProblemDto);
@@ -22,6 +25,8 @@ export class ProblemService {
 
   /**
    * Lists all problems without relation expansion.
+   *
+   * @returns A promise that resolves to every persisted problem entity.
    */
   findAll() {
     return this.problemRepository.find();
@@ -29,6 +34,10 @@ export class ProblemService {
 
   /**
    * Finds a problem by UUID or throws when it does not exist.
+   *
+   * @param id The problem UUID to load.
+   * @returns A promise that resolves to the matching problem entity.
+   * @throws {NotFoundException} When the problem does not exist.
    */
   async findOne(id: string) {
     const problem = await this.problemRepository.findOne({ where: { id } });
@@ -42,6 +51,11 @@ export class ProblemService {
 
   /**
    * Applies partial problem changes through TypeORM preload semantics.
+   *
+   * @param id The UUID of the problem to update.
+   * @param updateProblemDto Partial problem payload validated by NestJS.
+   * @returns A promise that resolves to the saved problem entity.
+   * @throws {NotFoundException} When the problem does not exist.
    */
   async update(id: string, updateProblemDto: UpdateProblemDto) {
     const problem = await this.problemRepository.preload({
@@ -58,6 +72,10 @@ export class ProblemService {
 
   /**
    * Deletes a problem by UUID and reports whether a row was removed.
+   *
+   * @param id The UUID of the problem to delete.
+   * @returns A promise that resolves to a deletion confirmation payload.
+   * @throws {NotFoundException} When the problem does not exist.
    */
   async remove(id: string) {
     const result = await this.problemRepository.delete(id);

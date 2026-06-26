@@ -39,6 +39,10 @@ export class JwtAuthGuard implements CanActivate {
 
   /**
    * Validates a bearer token and attaches its user entity to the current request.
+   *
+   * @param context Nest execution context for the current request.
+   * @returns A promise that resolves to `true` when the request is authorized.
+   * @throws {UnauthorizedException} When the token is missing, invalid, or the user no longer exists.
    */
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
@@ -71,6 +75,13 @@ export class JwtAuthGuard implements CanActivate {
     return true;
   }
 
+  /**
+   * Verifies a bearer token and returns its decoded payload.
+   *
+   * @param token Raw bearer token extracted from the request header.
+   * @returns A promise that resolves to the decoded JWT payload.
+   * @throws {UnauthorizedException} When the token signature or shape is invalid.
+   */
   private async verifyToken(token: string): Promise<JwtAuthPayload> {
     try {
       return await this.jwtService.verifyAsync<JwtAuthPayload>(token);
@@ -79,6 +90,12 @@ export class JwtAuthGuard implements CanActivate {
     }
   }
 
+  /**
+   * Extracts a bearer token from the authorization header.
+   *
+   * @param request Incoming HTTP request.
+   * @returns The raw token when the header contains a bearer credential.
+   */
   private extractTokenFromHeader(request: Request): string | undefined {
     const [type, token] = request.headers.authorization?.split(' ') ?? [];
     return type === 'Bearer' ? token : undefined;

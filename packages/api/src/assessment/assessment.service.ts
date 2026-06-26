@@ -16,6 +16,9 @@ export class AssessmentService {
 
   /**
    * Creates a recruiter-owned assessment from validated request data.
+   *
+   * @param createAssessmentDto Validated assessment creation payload.
+   * @returns A promise that resolves to the saved assessment with ordered problems.
    */
   async create(createAssessmentDto: CreateAssessmentDto) {
     const assessmentId = await this.assessmentRepository.manager.transaction(
@@ -44,6 +47,8 @@ export class AssessmentService {
 
   /**
    * Lists all assessments without relation expansion.
+   *
+   * @returns A promise that resolves to every persisted assessment entity.
    */
   findAll() {
     return this.assessmentRepository.find();
@@ -51,6 +56,10 @@ export class AssessmentService {
 
   /**
    * Finds an assessment by UUID or throws when it does not exist.
+   *
+   * @param id The assessment UUID to load.
+   * @returns A promise that resolves to the matching assessment entity.
+   * @throws {NotFoundException} When the assessment does not exist.
    */
   async findOne(id: string) {
     const assessment = await this.findOneWithProblems(id);
@@ -64,6 +73,9 @@ export class AssessmentService {
 
   /**
    * Loads one assessment together with its ordered problem memberships.
+   *
+   * @param id The assessment UUID to load.
+   * @returns A promise that resolves to the assessment or `null` when it is missing.
    */
   private findOneWithProblems(id: string) {
     return this.assessmentRepository
@@ -77,6 +89,11 @@ export class AssessmentService {
 
   /**
    * Applies partial assessment changes through TypeORM preload semantics.
+   *
+   * @param id The UUID of the assessment to update.
+   * @param updateAssessmentDto Partial assessment payload validated by NestJS.
+   * @returns A promise that resolves to the saved assessment with problems.
+   * @throws {NotFoundException} When the assessment does not exist.
    */
   async update(id: string, updateAssessmentDto: UpdateAssessmentDto) {
     await this.assessmentRepository.manager.transaction(async (manager) => {
@@ -107,6 +124,10 @@ export class AssessmentService {
 
   /**
    * Deletes an assessment by UUID and reports whether a row was removed.
+   *
+   * @param id The UUID of the assessment to delete.
+   * @returns A promise that resolves to a deletion confirmation payload.
+   * @throws {NotFoundException} When the assessment does not exist.
    */
   async remove(id: string) {
     const result = await this.assessmentRepository.delete(id);
@@ -120,6 +141,13 @@ export class AssessmentService {
 
   /**
    * Replaces the ordered set of problems attached to an assessment.
+   *
+   * @param assessmentProblemRepository Repository used to persist join rows.
+   * @param problemRepository Repository used to validate problem identifiers.
+   * @param assessmentId UUID of the assessment being synchronized.
+   * @param problemIds Ordered problem UUIDs to attach to the assessment.
+   * @returns A promise that resolves when the join table has been synchronized.
+   * @throws {NotFoundException} When one or more problem UUIDs do not exist.
    */
   private async syncAssessmentProblems(
     assessmentProblemRepository: Repository<AssessmentProblem>,

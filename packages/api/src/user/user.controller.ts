@@ -18,6 +18,9 @@ export class UserController {
 
   /**
    * Creates a platform user account.
+   *
+   * @param createUserDto User creation payload validated by NestJS.
+   * @returns A promise that resolves to the saved user entity.
    */
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
@@ -26,6 +29,8 @@ export class UserController {
 
   /**
    * Returns every user record.
+   *
+   * @returns A promise that resolves to every persisted user entity.
    */
   @Get()
   findAll() {
@@ -34,6 +39,9 @@ export class UserController {
 
   /**
    * Returns one user by UUID.
+   *
+   * @param id The user UUID to load.
+   * @returns A promise that resolves to the matching user entity.
    */
   @Get(':id')
   findOne(@Param('id', ParseUUIDPipe) id: string) {
@@ -42,6 +50,10 @@ export class UserController {
 
   /**
    * Updates a user account by UUID.
+   *
+   * @param id The user UUID to update.
+   * @param updateUserDto Partial user payload validated by NestJS.
+   * @returns A promise that resolves to the saved user entity.
    */
   @Patch(':id')
   update(
@@ -53,6 +65,9 @@ export class UserController {
 
   /**
    * Soft-deletes a user account by UUID.
+   *
+   * @param id The user UUID to delete.
+   * @returns A promise that resolves to a deletion confirmation payload.
    */
   @Delete(':id')
   remove(@Param('id', ParseUUIDPipe) id: string) {

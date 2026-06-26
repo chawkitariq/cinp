@@ -18,6 +18,9 @@ export class ProblemController {
 
   /**
    * Creates a reusable coding problem.
+   *
+   * @param createProblemDto Problem creation payload validated by NestJS.
+   * @returns A promise that resolves to the saved problem entity.
    */
   @Post()
   create(@Body() createProblemDto: CreateProblemDto) {
@@ -26,6 +29,8 @@ export class ProblemController {
 
   /**
    * Returns every problem record.
+   *
+   * @returns A promise that resolves to every persisted problem entity.
    */
   @Get()
   findAll() {
@@ -34,6 +39,9 @@ export class ProblemController {
 
   /**
    * Returns one problem by UUID.
+   *
+   * @param id The problem UUID to load.
+   * @returns A promise that resolves to the matching problem entity.
    */
   @Get(':id')
   findOne(@Param('id', ParseUUIDPipe) id: string) {
@@ -42,6 +50,10 @@ export class ProblemController {
 
   /**
    * Updates a problem by UUID.
+   *
+   * @param id The problem UUID to update.
+   * @param updateProblemDto Partial problem payload validated by NestJS.
+   * @returns A promise that resolves to the saved problem entity.
    */
   @Patch(':id')
   update(
@@ -53,6 +65,9 @@ export class ProblemController {
 
   /**
    * Deletes a problem by UUID.
+   *
+   * @param id The problem UUID to delete.
+   * @returns A promise that resolves to a deletion confirmation payload.
    */
   @Delete(':id')
   remove(@Param('id', ParseUUIDPipe) id: string) {
