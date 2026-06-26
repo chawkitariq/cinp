@@ -37,8 +37,8 @@ import {
 } from "@/components/ui/select";
 import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
+import { StarterCodeEditor } from "@/components/starter-code-editor";
 import { createProblem, updateProblem } from "@/api/problems";
-import { useMonacoEditor } from "@/hooks/use-monaco-editor";
 import { genericUserErrorMessage } from "@/utils/api-error";
 import {
   Difficulty,
@@ -186,53 +186,6 @@ function getPayload(values: ProblemFormValues): CreateProblemDto {
     constraints: getOptionalString(values.constraints),
     starterCode: getOptionalString(values.starterCode),
   };
-}
-
-/**
- * Monaco-backed editor field used for starter code input.
- */
-function StarterCodeEditor({
-  disabled,
-  invalid,
-  onChange,
-  value,
-}: {
-  disabled: boolean;
-  invalid: boolean;
-  onChange: (value: string) => void;
-  value: string;
-}) {
-  const { containerRef, isReady, loadError } = useMonacoEditor({
-    disabled,
-    onChange,
-    value,
-  });
-
-  return (
-    <>
-      <div
-        aria-invalid={invalid}
-        className="relative overflow-hidden rounded-lg border border-input bg-background shadow-xs transition-[color,box-shadow] focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20"
-      >
-        <div
-          ref={containerRef}
-          aria-label="Starter code"
-          className="h-72 w-full"
-          role="textbox"
-        />
-        {!isReady && !loadError ? (
-          <div className="absolute inset-0 flex items-center justify-center bg-background/80">
-            <Spinner />
-          </div>
-        ) : null}
-      </div>
-      {loadError ? (
-        <FieldDescription className="text-destructive">
-          {loadError}
-        </FieldDescription>
-      ) : null}
-    </>
-  );
 }
 
 /**
