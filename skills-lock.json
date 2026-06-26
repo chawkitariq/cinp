@@ -1,11 +1,29 @@
 {
   "version": 1,
   "skills": {
+    "api-testing": {
+      "source": "fugazi/test-automation-skills-agents",
+      "sourceType": "github",
+      "skillPath": "skills/api-testing/SKILL.md",
+      "computedHash": "3dc66451063a96feda80b21dbe09fe2785b3616ca88be708d79c80e8931d032b"
+    },
     "deploy-to-vercel": {
       "source": "vercel-labs/agent-skills",
       "sourceType": "github",
       "skillPath": "skills/deploy-to-vercel/SKILL.md",
       "computedHash": "03e0eaaa9bf13ba1e7ffa387f5893de6f324c0868c627001f179395a8feaa7c9"
+    },
+    "grill-me-qa": {
+      "source": "fugazi/test-automation-skills-agents",
+      "sourceType": "github",
+      "skillPath": "skills/grill-me-qa/SKILL.md",
+      "computedHash": "a561d572b18c6a9165392b8babb1329a619164613286d88fbce3096f84ce0e14"
+    },
+    "jsdoc-typescript-docs": {
+      "source": "patricio0312rev/skills",
+      "sourceType": "github",
+      "skillPath": "foundation/jsdoc-typescript-docs/SKILL.md",
+      "computedHash": "5b4f9de4974d5200db813921484dd4784c77bea7f3c0c79b31472e9546c374fd"
     },
     "react-call": {
       "source": "desko27/react-call",
