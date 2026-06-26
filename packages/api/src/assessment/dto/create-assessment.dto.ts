@@ -1,8 +1,11 @@
 import {
+  ArrayUnique,
   IsEnum,
   IsInt,
+  IsArray,
   IsOptional,
   IsString,
+  IsUUID,
   Min,
 } from 'class-validator';
 import { AssessmentStatus } from '../enums/assessment-status.enum';
@@ -31,4 +34,13 @@ export class CreateAssessmentDto {
   @IsOptional()
   @IsEnum(AssessmentStatus)
   status?: AssessmentStatus;
+
+  /**
+   * Ordered list of problem UUIDs included in the assessment.
+   */
+  @IsOptional()
+  @IsArray()
+  @ArrayUnique()
+  @IsUUID(undefined, { each: true })
+  problemIds?: string[];
 }

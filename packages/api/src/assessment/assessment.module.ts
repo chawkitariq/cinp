@@ -4,9 +4,10 @@ import { AssessmentController } from './assessment.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AssessmentProblem } from './entities/assessment-problem.entity';
 import { Assessment } from './entities/assessment.entity';
+import { Problem } from 'src/problem/entities/problem.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Assessment, AssessmentProblem])],
+  imports: [TypeOrmModule.forFeature([Assessment, AssessmentProblem, Problem])],
   controllers: [AssessmentController],
   providers: [AssessmentService],
 })
