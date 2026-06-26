@@ -10,6 +10,7 @@ import { z } from "zod/v3";
 
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
@@ -25,6 +26,7 @@ import {
   FieldGroup,
   FieldLabel,
   FieldSet,
+  FieldTitle,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import {
@@ -39,7 +41,11 @@ import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
 import { createAssessment, updateAssessment } from "@/api/assessments";
 import { genericUserErrorMessage } from "@/utils/api-error";
-import { AssessmentStatus, type Assessment } from "@cinp/api";
+import {
+  AssessmentStatus,
+  type Assessment,
+  type Problem,
+} from "@cinp/api";
 
 /**
  * Accepted assessment statuses for the form and API payload.
@@ -66,9 +72,11 @@ const assessmentSchema = z.object({
   status: z.enum(statusValues, {
     required_error: "Choisis un statut.",
   }),
+  problemIds: z.array(z.string().uuid()).default([]),
 });
 
 type AssessmentFormValues = z.infer<typeof assessmentSchema>;
+type AssessmentFormInput = z.input<typeof assessmentSchema>;
 
 /**
  * Props contract for creating a new assessment or editing an existing one.
@@ -77,10 +85,14 @@ type AssessmentFormProps =
   | {
       mode: "create";
       assessment?: never;
+      availableProblems: Problem[];
+      problemsErrorMessage?: string | null;
     }
   | {
       mode: "edit";
       assessment: Assessment;
+      availableProblems: Problem[];
+      problemsErrorMessage?: string | null;
     };
 
 /**
@@ -91,6 +103,7 @@ const emptyValues: AssessmentFormValues = {
   description: "",
   durationMin: 60,
   status: AssessmentStatus.DRAFT,
+  problemIds: [],
 };
 
 /**
@@ -121,6 +134,9 @@ function getDefaultValues(assessment?: Assessment): AssessmentFormValues {
     description: assessment.description ?? "",
     durationMin: assessment.durationMin,
     status: assessment.status as AssessmentFormValues["status"],
+    problemIds:
+      assessment.problems?.map((assessmentProblem) => assessmentProblem.problemId) ??
+      [],
   };
 }
 
@@ -136,7 +152,35 @@ function getPayload(values: AssessmentFormValues) {
     description: getOptionalString(values.description),
     durationMin: values.durationMin,
     status: values.status,
+    problemIds: values.problemIds,
   };
+}
+
+/**
+ * Keeps selected problems at the top of the list so edit mode preserves the
+ * current assessment order when the form is submitted unchanged.
+ *
+ * @param availableProblems Problems fetched from the API.
+ * @param selectedProblemIds Problem UUIDs already associated to the assessment.
+ * @returns The problems ordered for display in the selection grid.
+ */
+function getOrderedProblems(
+  availableProblems: Problem[],
+  selectedProblemIds: string[],
+) {
+  const problemsById = new Map(
+    availableProblems.map((problem) => [problem.id, problem]),
+  );
+
+  const selectedProblems = selectedProblemIds
+    .map((problemId) => problemsById.get(problemId))
+    .filter((problem): problem is Problem => Boolean(problem));
+
+  const remainingProblems = availableProblems.filter(
+    (problem) => !selectedProblemIds.includes(problem.id),
+  );
+
+  return [...selectedProblems, ...remainingProblems];
 }
 
 /**
@@ -149,19 +193,23 @@ function getPayload(values: AssessmentFormValues) {
 export function AssessmentForm({
   mode,
   assessment,
+  availableProblems,
+  problemsErrorMessage,
 }: AssessmentFormProps) {
   const router = useRouter();
   const [submitError, setSubmitError] = useState<string | null>(null);
   const isEdit = mode === "edit";
+  const defaultValues = getDefaultValues(assessment);
+  const orderedProblems = getOrderedProblems(availableProblems, defaultValues.problemIds);
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     control,
-  } = useForm<AssessmentFormValues>({
+  } = useForm<AssessmentFormInput, undefined, AssessmentFormValues>({
     resolver: zodResolver(assessmentSchema),
-    defaultValues: getDefaultValues(assessment),
+    defaultValues,
   });
 
   /**
@@ -287,6 +335,61 @@ export function AssessmentForm({
                   l equipe.
                 </FieldDescription>
                 <FieldError>{errors.description?.message}</FieldError>
+              </Field>
+
+              <Field data-invalid={Boolean(errors.problemIds)}>
+                <FieldTitle>Problems associes</FieldTitle>
+                <FieldDescription>
+                  Selectionne un ou plusieurs problems existants. L&apos;ordre
+                  de cette liste devient l&apos;ordre de l&apos;evaluation.
+                </FieldDescription>
+                {problemsErrorMessage ? (
+                  <Alert variant="destructive">
+                    <AlertCircleIcon />
+                    <AlertDescription>
+                      {problemsErrorMessage}
+                    </AlertDescription>
+                  </Alert>
+                ) : null}
+                {orderedProblems.length > 0 ? (
+                  <div className="grid gap-3 lg:max-h-96 lg:grid-cols-2 lg:overflow-y-auto lg:pr-1">
+                    {orderedProblems.map((problem) => (
+                      <label
+                        key={problem.id}
+                        className="group flex cursor-pointer items-start gap-3 rounded-xl border bg-background p-4 transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary/5"
+                      >
+                        <input
+                          {...register("problemIds")}
+                          className="mt-1 h-4 w-4 shrink-0 rounded border-input text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                          type="checkbox"
+                          value={problem.id}
+                        />
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-start justify-between gap-3">
+                            <div className="min-w-0">
+                              <p className="truncate font-medium">
+                                {problem.title}
+                              </p>
+                              <p className="truncate text-sm text-muted-foreground">
+                                {problem.slug}
+                              </p>
+                            </div>
+                            <Badge variant="outline">{problem.difficulty}</Badge>
+                          </div>
+                          <p className="mt-2 line-clamp-3 text-sm leading-6 text-muted-foreground">
+                            {problem.description}
+                          </p>
+                        </div>
+                      </label>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-sm text-muted-foreground">
+                    Aucun problem disponible pour le moment. Cree-en d&apos;abord
+                    pour composer cette evaluation.
+                  </p>
+                )}
+                <FieldError>{errors.problemIds?.message}</FieldError>
               </Field>
             </FieldGroup>
           </FieldSet>

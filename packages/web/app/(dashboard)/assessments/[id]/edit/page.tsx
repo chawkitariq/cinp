@@ -11,6 +11,7 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 import { getAssessment } from "@/api/assessments";
+import { getProblems } from "@/api/problems";
 
 /**
  * Always render fresh assessment edit data from the local API.
@@ -29,9 +30,12 @@ export default async function EditAssessmentPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const result = await getAssessment(id);
+  const [assessmentResult, problemsResult] = await Promise.all([
+    getAssessment(id),
+    getProblems(),
+  ]);
 
-  if (!result.ok) {
+  if (!assessmentResult.ok) {
     return (
       <main className="min-h-screen bg-muted/30 px-4 py-8 sm:px-6 lg:px-8">
         <div className="mx-auto flex w-full max-w-3xl flex-col gap-6">
@@ -47,7 +51,7 @@ export default async function EditAssessmentPage({
                 <AlertCircleIcon />
               </EmptyMedia>
               <EmptyTitle>Evaluation indisponible</EmptyTitle>
-              <EmptyDescription>{result.message}</EmptyDescription>
+              <EmptyDescription>{assessmentResult.message}</EmptyDescription>
             </EmptyHeader>
           </Empty>
         </div>
@@ -55,12 +59,12 @@ export default async function EditAssessmentPage({
     );
   }
 
-  const { assessment } = result;
+  const { assessment } = assessmentResult;
 
   return (
     <main className="min-h-screen bg-muted/30 px-4 py-8 sm:px-6 lg:px-8">
       <div className="mx-auto flex w-full max-w-3xl flex-col gap-6">
-          <Button asChild className="w-fit" variant="ghost">
+        <Button asChild className="w-fit" variant="ghost">
           <Link href={`/assessments/${assessment.id}`}>
             <ArrowLeftIcon data-icon="inline-start" />
             Retour a l evaluation
@@ -79,7 +83,12 @@ export default async function EditAssessmentPage({
           </p>
         </header>
 
-        <AssessmentForm assessment={assessment} mode="edit" />
+        <AssessmentForm
+          assessment={assessment}
+          availableProblems={problemsResult.ok ? problemsResult.problems : []}
+          mode="edit"
+          problemsErrorMessage={problemsResult.ok ? null : problemsResult.message}
+        />
       </div>
     </main>
   );

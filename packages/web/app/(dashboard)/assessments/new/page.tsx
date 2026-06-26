@@ -3,13 +3,21 @@ import { ArrowLeftIcon } from "lucide-react";
 
 import { AssessmentForm } from "@/components/assessments/assessment-form";
 import { Button } from "@/components/ui/button";
+import { getProblems } from "@/api/problems";
+
+/**
+ * Always render fresh assessment creation data from the local API.
+ */
+export const dynamic = "force-dynamic";
 
 /**
  * Page for creating a new recruiter assessment.
  *
  * @returns The assessment creation screen.
  */
-export default function NewAssessmentPage() {
+export default async function NewAssessmentPage() {
+  const result = await getProblems();
+
   return (
     <main className="min-h-screen bg-muted/30 px-4 py-8 sm:px-6 lg:px-8">
       <div className="mx-auto flex w-full max-w-3xl flex-col gap-6">
@@ -33,7 +41,11 @@ export default function NewAssessmentPage() {
           </p>
         </header>
 
-        <AssessmentForm mode="create" />
+        <AssessmentForm
+          availableProblems={result.ok ? result.problems : []}
+          mode="create"
+          problemsErrorMessage={result.ok ? null : result.message}
+        />
       </div>
     </main>
   );

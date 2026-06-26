@@ -179,6 +179,46 @@ export default async function AssessmentPage({
             </p>
           </CardContent>
         </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Problems associes</CardTitle>
+            <CardDescription>
+              Probleme ordonnes et disponibles pour cette evaluation.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-3">
+            {assessment.problems.length > 0 ? (
+              assessment.problems.map((assessmentProblem) => {
+                const problem = assessmentProblem.problem;
+
+                return (
+                  <div
+                    key={assessmentProblem.problemId}
+                    className="flex items-start justify-between gap-4 rounded-lg border p-4"
+                  >
+                    <div className="min-w-0">
+                      <p className="font-medium">{problem.title}</p>
+                      <p className="truncate text-sm text-muted-foreground">
+                        {problem.slug}
+                      </p>
+                      <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">
+                        {problem.description}
+                      </p>
+                    </div>
+                    <Button asChild size="sm" variant="outline">
+                      <Link href={`/problems/${problem.id}`}>Voir</Link>
+                    </Button>
+                  </div>
+                );
+              })
+            ) : (
+              <p className="text-sm text-muted-foreground">
+                Aucun problem n&apos;est encore associe a cette evaluation.
+              </p>
+            )}
+          </CardContent>
+        </Card>
       </div>
     </main>
   );
