@@ -7,17 +7,6 @@ import {
 } from "@/utils/api-error";
 import type { CreateProblemDto, Problem, UpdateProblemDto } from "@cinp/api";
 
-async function fetchProblemMutation(
-  input: string,
-  init: RequestInit,
-): Promise<Response> {
-  try {
-    return await fetch(input, init);
-  } catch {
-    throw new Error(serviceUnavailableMessage);
-  }
-}
-
 /**
  * Result shape returned by the problems list fetcher without throwing in pages.
  */
@@ -110,16 +99,22 @@ export async function getProblem(id: string): Promise<ProblemResult> {
  * Creates a problem through the API and returns the saved entity.
  */
 export async function createProblem(payload: CreateProblemDto) {
-  const response = await fetchProblemMutation(`${API_BASE_URL}/problems`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(payload),
-  });
+  let response: Response;
+
+  try {
+    response = await fetch(`${API_BASE_URL}/problems`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+  } catch {
+    throw new Error(serviceUnavailableMessage);
+  }
 
   if (!response.ok) {
-    throw new Error(await getApiErrorMessage(response));
+    throw new Error(getApiErrorMessage(response));
   }
 
   return (await response.json()) as Problem;
@@ -132,16 +127,22 @@ export async function updateProblem(
   id: string,
   payload: UpdateProblemDto,
 ) {
-  const response = await fetchProblemMutation(`${API_BASE_URL}/problems/${id}`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(payload),
-  });
+  let response: Response;
+
+  try {
+    response = await fetch(`${API_BASE_URL}/problems/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+  } catch {
+    throw new Error(serviceUnavailableMessage);
+  }
 
   if (!response.ok) {
-    throw new Error(await getApiErrorMessage(response));
+    throw new Error(getApiErrorMessage(response));
   }
 
   return (await response.json()) as Problem;
@@ -151,11 +152,17 @@ export async function updateProblem(
  * Deletes a problem by API UUID.
  */
 export async function deleteProblem(id: string) {
-  const response = await fetchProblemMutation(`${API_BASE_URL}/problems/${id}`, {
-    method: "DELETE",
-  });
+  let response: Response;
+
+  try {
+    response = await fetch(`${API_BASE_URL}/problems/${id}`, {
+      method: "DELETE",
+    });
+  } catch {
+    throw new Error(serviceUnavailableMessage);
+  }
 
   if (!response.ok) {
-    throw new Error(await getApiErrorMessage(response));
+    throw new Error(getApiErrorMessage(response));
   }
 }

@@ -11,17 +11,6 @@ import type {
   UpdateAssessmentDto,
 } from "@cinp/api";
 
-async function fetchAssessmentMutation(
-  input: string,
-  init: RequestInit,
-): Promise<Response> {
-  try {
-    return await fetch(input, init);
-  } catch {
-    throw new Error(serviceUnavailableMessage);
-  }
-}
-
 /**
  * Result shape returned by the assessments list fetcher without throwing in pages.
  */
@@ -114,19 +103,22 @@ export async function getAssessment(id: string): Promise<AssessmentResult> {
  * Creates an assessment through the API and returns the saved entity.
  */
 export async function createAssessment(payload: CreateAssessmentDto) {
-  const response = await fetchAssessmentMutation(
-    `${API_BASE_URL}/assessments`,
-    {
+  let response: Response;
+
+  try {
+    response = await fetch(`${API_BASE_URL}/assessments`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(payload),
-    },
-  );
+    });
+  } catch {
+    throw new Error(serviceUnavailableMessage);
+  }
 
   if (!response.ok) {
-    throw new Error(await getApiErrorMessage(response));
+    throw new Error(getApiErrorMessage(response));
   }
 
   return (await response.json()) as Assessment;
@@ -139,19 +131,22 @@ export async function updateAssessment(
   id: string,
   payload: UpdateAssessmentDto,
 ) {
-  const response = await fetchAssessmentMutation(
-    `${API_BASE_URL}/assessments/${id}`,
-    {
+  let response: Response;
+
+  try {
+    response = await fetch(`${API_BASE_URL}/assessments/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(payload),
-    },
-  );
+    });
+  } catch {
+    throw new Error(serviceUnavailableMessage);
+  }
 
   if (!response.ok) {
-    throw new Error(await getApiErrorMessage(response));
+    throw new Error(getApiErrorMessage(response));
   }
 
   return (await response.json()) as Assessment;
@@ -161,14 +156,17 @@ export async function updateAssessment(
  * Deletes an assessment by API UUID.
  */
 export async function deleteAssessment(id: string) {
-  const response = await fetchAssessmentMutation(
-    `${API_BASE_URL}/assessments/${id}`,
-    {
+  let response: Response;
+
+  try {
+    response = await fetch(`${API_BASE_URL}/assessments/${id}`, {
       method: "DELETE",
-    },
-  );
+    });
+  } catch {
+    throw new Error(serviceUnavailableMessage);
+  }
 
   if (!response.ok) {
-    throw new Error(await getApiErrorMessage(response));
+    throw new Error(getApiErrorMessage(response));
   }
 }

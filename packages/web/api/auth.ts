@@ -5,12 +5,14 @@ import {
 } from "@/utils/api-error";
 import type { AuthResponse, LoginDto, RegisterDto } from "@cinp/api";
 
-async function fetchAuthMutation(
-  path: "/auth/login" | "/auth/register",
-  payload: LoginDto | RegisterDto,
-) {
+/**
+ * Authenticates a user with the API and returns the issued session payload.
+ */
+export async function login(payload: LoginDto) {
+  let response: Response;
+
   try {
-    return await fetch(`${API_BASE_URL}${path}`, {
+    response = await fetch(`${API_BASE_URL}/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -20,13 +22,6 @@ async function fetchAuthMutation(
   } catch {
     throw new Error(serviceUnavailableMessage);
   }
-}
-
-/**
- * Authenticates a user with the API and returns the issued session payload.
- */
-export async function login(payload: LoginDto) {
-  const response = await fetchAuthMutation("/auth/login", payload);
 
   if (!response.ok) {
     throw new Error(getApiErrorMessage(response));
@@ -39,7 +34,19 @@ export async function login(payload: LoginDto) {
  * Creates a recruiter account with the API and returns the issued session payload.
  */
 export async function register(payload: RegisterDto) {
-  const response = await fetchAuthMutation("/auth/register", payload);
+  let response: Response;
+
+  try {
+    response = await fetch(`${API_BASE_URL}/auth/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+  } catch {
+    throw new Error(serviceUnavailableMessage);
+  }
 
   if (!response.ok) {
     throw new Error(getApiErrorMessage(response));
