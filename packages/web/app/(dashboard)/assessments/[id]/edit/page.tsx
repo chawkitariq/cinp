@@ -19,6 +19,9 @@ export const dynamic = "force-dynamic";
 
 /**
  * Page for editing an existing recruiter assessment.
+ *
+ * @param params Route params resolved by the App Router.
+ * @returns The assessment edit screen, or an empty state when the API lookup fails.
  */
 export default async function EditAssessmentPage({
   params,

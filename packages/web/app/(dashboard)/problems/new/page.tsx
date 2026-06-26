@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 
 /**
  * Page for creating a new reusable coding problem.
+ *
+ * @returns The problem creation screen.
  */
 export default function NewProblemPage() {
   return (

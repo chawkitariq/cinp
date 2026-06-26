@@ -6,6 +6,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 
 /**
  * Primary sans-serif font exposed through a CSS variable.
+ *
+ * @returns The configured Geist Sans font loader.
  */
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,6 +16,8 @@ const geistSans = Geist({
 
 /**
  * Monospace font exposed through a CSS variable.
+ *
+ * @returns The configured Geist Mono font loader.
  */
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -30,6 +34,9 @@ export const metadata: Metadata = {
 
 /**
  * Root document layout that installs fonts and tooltip context.
+ *
+ * @param children The application routes rendered inside the document shell.
+ * @returns The root HTML document structure.
  */
 export default function RootLayout({
   children,

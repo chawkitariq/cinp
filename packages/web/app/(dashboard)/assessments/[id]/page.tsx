@@ -58,6 +58,9 @@ const statusVariants: Record<
 
 /**
  * Server-rendered detail page for a single assessment.
+ *
+ * @param params Route params resolved by the App Router.
+ * @returns The assessment detail screen, or an empty state when the API lookup fails.
  */
 export default async function AssessmentPage({
   params,

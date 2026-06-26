@@ -31,6 +31,9 @@ const pageTitles: Record<string, string> = {
 
 /**
  * Resolves dynamic dashboard paths to a breadcrumb title.
+ *
+ * @param pathname The current dashboard pathname.
+ * @returns The localized breadcrumb title for that route.
  */
 function getCurrentTitle(pathname: string) {
   if (pathname.startsWith("/problems/") && pathname.endsWith("/edit")) {
@@ -54,6 +57,9 @@ function getCurrentTitle(pathname: string) {
 
 /**
  * Wraps dashboard pages with the shared sidebar and breadcrumb chrome.
+ *
+ * @param children The dashboard page content to render inside the shell.
+ * @returns The wrapped dashboard layout.
  */
 export function DashboardShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()

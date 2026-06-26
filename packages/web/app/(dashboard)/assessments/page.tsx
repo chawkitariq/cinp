@@ -59,6 +59,9 @@ const statusVariants: Record<
 
 /**
  * Truncates long assessment descriptions for assessment cards.
+ *
+ * @param description The raw assessment description.
+ * @returns A shortened preview suitable for a card.
  */
 function getShortDescription(description: string) {
   if (description.length <= 170) {
@@ -70,6 +73,8 @@ function getShortDescription(description: string) {
 
 /**
  * Server-rendered assessment library page.
+ *
+ * @returns The assessment library screen.
  */
 export default async function AssessmentsPage() {
   const result = await getAssessments();

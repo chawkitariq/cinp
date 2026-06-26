@@ -35,6 +35,8 @@ export type ProblemResult =
 
 /**
  * Fetches all problems from the API without using the Next.js data cache.
+ *
+ * @returns A promise that resolves to either the problem list or an error message.
  */
 export async function getProblems(): Promise<ProblemsResult> {
   let response: Response;
@@ -64,6 +66,10 @@ export async function getProblems(): Promise<ProblemsResult> {
 
 /**
  * Fetches one problem by API UUID and delegates 404 responses to Next.js.
+ *
+ * @param id The problem UUID to load.
+ * @returns A promise that resolves to either the problem payload or an error message.
+ * @throws {never} Calls Next.js `notFound()` when the problem does not exist.
  */
 export async function getProblem(id: string): Promise<ProblemResult> {
   let response: Response;
@@ -97,6 +103,10 @@ export async function getProblem(id: string): Promise<ProblemResult> {
 
 /**
  * Creates a problem through the API and returns the saved entity.
+ *
+ * @param payload Problem fields to persist.
+ * @returns A promise that resolves to the saved problem.
+ * @throws {Error} When the service is unavailable or returns a non-OK status.
  */
 export async function createProblem(payload: CreateProblemDto) {
   let response: Response;
@@ -122,6 +132,11 @@ export async function createProblem(payload: CreateProblemDto) {
 
 /**
  * Updates an existing problem through the API and returns the saved entity.
+ *
+ * @param id The UUID of the problem to update.
+ * @param payload Updated problem fields to persist.
+ * @returns A promise that resolves to the saved problem.
+ * @throws {Error} When the service is unavailable or returns a non-OK status.
  */
 export async function updateProblem(
   id: string,
@@ -150,6 +165,10 @@ export async function updateProblem(
 
 /**
  * Deletes a problem by API UUID.
+ *
+ * @param id The UUID of the problem to delete.
+ * @returns A promise that resolves when the deletion request succeeds.
+ * @throws {Error} When the service is unavailable or returns a non-OK status.
  */
 export async function deleteProblem(id: string) {
   let response: Response;

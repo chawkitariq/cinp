@@ -24,6 +24,9 @@ import { ChevronsUpDownIcon, SparklesIcon, BadgeCheckIcon, CreditCardIcon, BellI
 
 /**
  * Sidebar user account menu rendered in the dashboard footer.
+ *
+ * @param user User profile data displayed in the menu trigger and dropdown.
+ * @returns The user account menu.
  */
 export function NavUser({
   user,

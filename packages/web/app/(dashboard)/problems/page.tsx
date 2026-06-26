@@ -59,6 +59,9 @@ const difficultyVariants: Record<
 
 /**
  * Truncates long problem descriptions for problem cards.
+ *
+ * @param description The raw problem description.
+ * @returns A shortened preview suitable for a card.
  */
 function getShortDescription(description: string) {
   if (description.length <= 170) {
@@ -70,6 +73,8 @@ function getShortDescription(description: string) {
 
 /**
  * Server-rendered problem library page.
+ *
+ * @returns The problem library screen.
  */
 export default async function ProblemsPage() {
   const result = await getProblems();

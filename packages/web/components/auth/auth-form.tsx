@@ -45,6 +45,12 @@ type AuthFormProps = {
 
 const authTokenStorageKey = "cinp_access_token";
 
+/**
+ * Builds the validation schema used by the auth form for the selected mode.
+ *
+ * @param mode The form mode that determines whether password confirmation is required.
+ * @returns A Zod schema matching the form fields.
+ */
 function getAuthSchema(mode: AuthMode) {
   return z
     .object({
@@ -71,6 +77,12 @@ function getAuthSchema(mode: AuthMode) {
     });
 }
 
+/**
+ * Maps form state to the login DTO expected by the API.
+ *
+ * @param values Raw form values collected from the login view.
+ * @returns The DTO sent to the login endpoint.
+ */
 function getLoginPayload(values: AuthFormValues): LoginDto {
   return {
     email: values.email.trim(),
@@ -78,6 +90,12 @@ function getLoginPayload(values: AuthFormValues): LoginDto {
   };
 }
 
+/**
+ * Maps form state to the registration DTO expected by the API.
+ *
+ * @param values Raw form values collected from the registration view.
+ * @returns The DTO sent to the registration endpoint.
+ */
 function getRegisterPayload(values: AuthFormValues): RegisterDto {
   return {
     email: values.email.trim(),
@@ -87,6 +105,9 @@ function getRegisterPayload(values: AuthFormValues): RegisterDto {
 
 /**
  * Client-side authentication form shared by the login and registration pages.
+ *
+ * @param mode Determines whether the form renders login or registration fields.
+ * @returns The rendered authentication form.
  */
 export function AuthForm({ mode }: AuthFormProps) {
   const router = useRouter();
@@ -106,6 +127,13 @@ export function AuthForm({ mode }: AuthFormProps) {
     },
   });
 
+  /**
+   * Submits the form, stores the access token, and redirects to the dashboard.
+   *
+   * @param values Validated auth form values.
+   * @returns A promise that resolves once the submission flow completes.
+   * @throws {Error} When the API call fails or returns a user-facing error.
+   */
   async function onSubmit(values: AuthFormValues) {
     setSubmitError(null);
 

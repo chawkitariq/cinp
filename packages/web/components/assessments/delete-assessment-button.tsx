@@ -12,6 +12,9 @@ import { genericUserErrorMessage } from "@/utils/api-error";
 
 /**
  * Client action button that confirms and deletes an assessment by UUID.
+ *
+ * @param assessmentId The UUID of the assessment to delete.
+ * @returns The destructive action button and its inline error state.
  */
 export function DeleteAssessmentButton({
   assessmentId,
@@ -22,6 +25,12 @@ export function DeleteAssessmentButton({
   const [error, setError] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
+  /**
+   * Opens the confirmation dialog, deletes the assessment, and redirects back.
+   *
+   * @returns A promise that resolves after the delete flow completes.
+   * @throws {Error} Never throws; errors are captured and rendered inline.
+   */
   async function deleteAssessment() {
     const confirmed = await ConfirmDialog.call({
       title: "Supprimer cette evaluation ?",

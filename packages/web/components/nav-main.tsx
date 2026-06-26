@@ -22,6 +22,10 @@ import { ChevronRightIcon } from "lucide-react"
 
 /**
  * Checks whether a navigation item should be highlighted for the route.
+ *
+ * @param pathname The current route pathname.
+ * @param url The navigation target URL.
+ * @returns `true` when the item should be treated as active.
  */
 function isRouteActive(pathname: string, url: string) {
   return pathname === url || pathname.startsWith(`${url}/`)
@@ -29,6 +33,9 @@ function isRouteActive(pathname: string, url: string) {
 
 /**
  * Primary sidebar navigation supporting optional nested items.
+ *
+ * @param items Navigation entries and optional child links to render.
+ * @returns The sidebar navigation tree.
  */
 export function NavMain({
   items,

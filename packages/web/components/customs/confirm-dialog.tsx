@@ -93,6 +93,11 @@ const ConfirmDialogView: UserComponent<
   )
 }
 
+/**
+ * Callable confirmation dialog that resolves to a boolean choice.
+ *
+ * @returns A callable dialog handle that yields `true` when confirmed and `false` otherwise.
+ */
 export const ConfirmDialog = createCallable<
   ConfirmDialogProps,
   boolean,

@@ -12,6 +12,8 @@ export const metadata: Metadata = {
 
 /**
  * Recruiter login page.
+ *
+ * @returns The login screen.
  */
 export default function LoginPage() {
   return (

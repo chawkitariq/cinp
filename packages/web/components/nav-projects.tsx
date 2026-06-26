@@ -20,6 +20,9 @@ import { MoreHorizontalIcon, FolderIcon, ArrowRightIcon, Trash2Icon } from "luci
 
 /**
  * Sidebar project list with per-project contextual actions.
+ *
+ * @param projects Project entries to render in the sidebar.
+ * @returns The project list and its contextual menu actions.
  */
 export function NavProjects({
   projects,

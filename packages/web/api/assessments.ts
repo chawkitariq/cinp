@@ -39,6 +39,8 @@ export type AssessmentResult =
 
 /**
  * Fetches all assessments from the API without using the Next.js data cache.
+ *
+ * @returns A promise that resolves to either the assessment list or an error message.
  */
 export async function getAssessments(): Promise<AssessmentsResult> {
   let response: Response;
@@ -68,6 +70,10 @@ export async function getAssessments(): Promise<AssessmentsResult> {
 
 /**
  * Fetches one assessment by API UUID and delegates 404 responses to Next.js.
+ *
+ * @param id The assessment UUID to load.
+ * @returns A promise that resolves to either the assessment payload or an error message.
+ * @throws {never} Calls Next.js `notFound()` when the assessment does not exist.
  */
 export async function getAssessment(id: string): Promise<AssessmentResult> {
   let response: Response;
@@ -101,6 +107,10 @@ export async function getAssessment(id: string): Promise<AssessmentResult> {
 
 /**
  * Creates an assessment through the API and returns the saved entity.
+ *
+ * @param payload Assessment fields to persist.
+ * @returns A promise that resolves to the saved assessment.
+ * @throws {Error} When the service is unavailable or returns a non-OK status.
  */
 export async function createAssessment(payload: CreateAssessmentDto) {
   let response: Response;
@@ -126,6 +136,11 @@ export async function createAssessment(payload: CreateAssessmentDto) {
 
 /**
  * Updates an existing assessment through the API and returns the saved entity.
+ *
+ * @param id The UUID of the assessment to update.
+ * @param payload Updated assessment fields to persist.
+ * @returns A promise that resolves to the saved assessment.
+ * @throws {Error} When the service is unavailable or returns a non-OK status.
  */
 export async function updateAssessment(
   id: string,
@@ -154,6 +169,10 @@ export async function updateAssessment(
 
 /**
  * Deletes an assessment by API UUID.
+ *
+ * @param id The UUID of the assessment to delete.
+ * @returns A promise that resolves when the deletion request succeeds.
+ * @throws {Error} When the service is unavailable or returns a non-OK status.
  */
 export async function deleteAssessment(id: string) {
   let response: Response;

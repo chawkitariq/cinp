@@ -95,6 +95,9 @@ const emptyValues: AssessmentFormValues = {
 
 /**
  * Converts blank optional text fields to undefined for cleaner API payloads.
+ *
+ * @param value Raw textarea content.
+ * @returns `undefined` when the field is blank, otherwise the trimmed value.
  */
 function getOptionalString(value: string) {
   const trimmedValue = value.trim();
@@ -104,6 +107,9 @@ function getOptionalString(value: string) {
 
 /**
  * Maps an optional API assessment entity to editable form values.
+ *
+ * @param assessment The assessment entity to prefill, if any.
+ * @returns The form values used by React Hook Form.
  */
 function getDefaultValues(assessment?: Assessment): AssessmentFormValues {
   if (!assessment) {
@@ -120,6 +126,9 @@ function getDefaultValues(assessment?: Assessment): AssessmentFormValues {
 
 /**
  * Builds the create/update payload expected by the assessment API.
+ *
+ * @param values Validated form values.
+ * @returns The payload expected by the assessments endpoints.
  */
 function getPayload(values: AssessmentFormValues) {
   return {
@@ -132,6 +141,10 @@ function getPayload(values: AssessmentFormValues) {
 
 /**
  * Form used to create or edit recruiter assessments.
+ *
+ * @param mode Determines whether the form creates or edits an assessment.
+ * @param assessment Existing assessment data when editing.
+ * @returns The rendered assessment form.
  */
 export function AssessmentForm({
   mode,
@@ -151,6 +164,13 @@ export function AssessmentForm({
     defaultValues: getDefaultValues(assessment),
   });
 
+  /**
+   * Submits the form and redirects to the saved assessment detail page.
+   *
+   * @param values Validated assessment form values.
+   * @returns A promise that resolves once persistence and navigation complete.
+   * @throws {Error} When the API call fails or returns a user-facing error.
+   */
   async function onSubmit(values: AssessmentFormValues) {
     setSubmitError(null);
 

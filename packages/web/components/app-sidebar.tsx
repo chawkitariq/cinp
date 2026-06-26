@@ -106,6 +106,9 @@ const data = {
 
 /**
  * Application sidebar with tenant switcher, primary nav, and user menu.
+ *
+ * @param props Standard sidebar container props forwarded to the shell.
+ * @returns The application sidebar chrome.
  */
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (

@@ -7,6 +7,10 @@ import type { AuthResponse, LoginDto, RegisterDto } from "@cinp/api";
 
 /**
  * Authenticates a user with the API and returns the issued session payload.
+ *
+ * @param payload Credentials submitted by the login form.
+ * @returns A promise that resolves to the authenticated session payload.
+ * @throws {Error} When the service is unavailable or returns a non-OK status.
  */
 export async function login(payload: LoginDto) {
   let response: Response;
@@ -32,6 +36,10 @@ export async function login(payload: LoginDto) {
 
 /**
  * Creates a recruiter account with the API and returns the issued session payload.
+ *
+ * @param payload Registration details submitted by the signup form.
+ * @returns A promise that resolves to the authenticated session payload.
+ * @throws {Error} When the service is unavailable or returns a non-OK status.
  */
 export async function register(payload: RegisterDto) {
   let response: Response;

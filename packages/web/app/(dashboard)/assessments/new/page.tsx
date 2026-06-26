@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 
 /**
  * Page for creating a new recruiter assessment.
+ *
+ * @returns The assessment creation screen.
  */
 export default function NewAssessmentPage() {
   return (

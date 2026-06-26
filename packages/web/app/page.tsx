@@ -2,6 +2,8 @@ import Image from "next/image";
 
 /**
  * Temporary starter homepage retained until the product homepage is built.
+ *
+ * @returns The starter landing page.
  */
 export default function Home() {
   return (

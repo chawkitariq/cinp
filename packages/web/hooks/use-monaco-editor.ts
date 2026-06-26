@@ -5,6 +5,11 @@ import type { editor } from "monaco-editor";
 
 /**
  * Options used to initialize and sync the Monaco editor instance.
+ *
+ * @property disabled Whether the editor should be read-only.
+ * @property language Monaco language identifier to use for the model.
+ * @property onChange Callback fired when the editor content changes.
+ * @property value Current editor value controlled by React state.
  */
 type UseMonacoEditorOptions = {
   disabled: boolean;

@@ -12,12 +12,21 @@ import { genericUserErrorMessage } from "@/utils/api-error";
 
 /**
  * Client action button that confirms and deletes a problem by UUID.
+ *
+ * @param problemId The UUID of the problem to delete.
+ * @returns The destructive action button and its inline error state.
  */
 export function DeleteProblemButton({ problemId }: { problemId: string }) {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
+  /**
+   * Opens the confirmation dialog, deletes the problem, and redirects back.
+   *
+   * @returns A promise that resolves after the delete flow completes.
+   * @throws {Error} Never throws; errors are captured and rendered inline.
+   */
   async function deleteProblem() {
     const confirmed = await ConfirmDialog.call({
       title: "Supprimer ce probleme ?",

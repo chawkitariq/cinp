@@ -132,6 +132,9 @@ const emptyValues: ProblemFormValues = {
 
 /**
  * Converts blank optional text fields to undefined for cleaner API payloads.
+ *
+ * @param value Raw textarea content.
+ * @returns `undefined` when the field is blank, otherwise the trimmed value.
  */
 function getOptionalString(value: string) {
   const trimmedValue = value.trim();
@@ -141,6 +144,10 @@ function getOptionalString(value: string) {
 
 /**
  * Parses the examples JSON textarea into the API examples array.
+ *
+ * @param value Raw JSON string entered in the examples field.
+ * @returns The parsed examples payload or `undefined` when the field is blank.
+ * @throws {SyntaxError} When the JSON text is invalid.
  */
 function getExamples(value: string): CreateProblemDto["examples"] {
   const trimmedValue = value.trim();
@@ -154,6 +161,9 @@ function getExamples(value: string): CreateProblemDto["examples"] {
 
 /**
  * Maps an optional API problem entity to editable form values.
+ *
+ * @param problem The problem entity to prefill, if any.
+ * @returns The form values used by React Hook Form.
  */
 function getDefaultValues(problem?: Problem): ProblemFormValues {
   if (!problem) {
@@ -175,6 +185,9 @@ function getDefaultValues(problem?: Problem): ProblemFormValues {
 
 /**
  * Builds the create/update payload expected by the problem API.
+ *
+ * @param values Validated form values.
+ * @returns The payload expected by the problems endpoints.
  */
 function getPayload(values: ProblemFormValues): CreateProblemDto {
   return {
@@ -190,6 +203,10 @@ function getPayload(values: ProblemFormValues): CreateProblemDto {
 
 /**
  * Form used to create or edit reusable coding problems.
+ *
+ * @param mode Determines whether the form creates or edits a problem.
+ * @param problem Existing problem data when editing.
+ * @returns The rendered problem form.
  */
 export function ProblemForm({
   mode,
@@ -209,6 +226,13 @@ export function ProblemForm({
     defaultValues: getDefaultValues(problem),
   });
 
+  /**
+   * Submits the form and redirects to the saved problem detail page.
+   *
+   * @param values Validated problem form values.
+   * @returns A promise that resolves once persistence and navigation complete.
+   * @throws {Error} When the API call fails or returns a user-facing error.
+   */
   async function onSubmit(values: ProblemFormValues) {
     setSubmitError(null);
 

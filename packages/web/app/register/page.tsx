@@ -12,6 +12,8 @@ export const metadata: Metadata = {
 
 /**
  * Recruiter registration page.
+ *
+ * @returns The registration screen.
  */
 export default function RegisterPage() {
   return (

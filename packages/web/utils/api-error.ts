@@ -12,6 +12,9 @@ export const genericUserErrorMessage =
 
 /**
  * Maps technical HTTP failures to product-facing messages.
+ *
+ * @param response The failed response returned by the backend.
+ * @returns A localized message safe to show in the UI.
  */
 export function getApiErrorMessage(response: Response) {
   if (response.status === 400) {

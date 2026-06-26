@@ -6,6 +6,11 @@ import { useMonacoEditor } from "@/hooks/use-monaco-editor";
 
 /**
  * Props for the Monaco-backed starter code editor.
+ *
+ * @property disabled Whether the editor is read-only.
+ * @property invalid Whether the field should be rendered as invalid.
+ * @property onChange Callback fired when the editor value changes.
+ * @property value Controlled editor value.
  */
 type StarterCodeEditorProps = {
   disabled: boolean;
@@ -16,6 +21,12 @@ type StarterCodeEditorProps = {
 
 /**
  * Monaco-backed editor field used for starter code input.
+ *
+ * @param disabled Whether the editor is read-only.
+ * @param invalid Whether the field should be rendered as invalid.
+ * @param onChange Callback fired when the editor value changes.
+ * @param value Controlled editor value.
+ * @returns The rendered starter code editor and its validation message.
  */
 export function StarterCodeEditor({
   disabled,

@@ -58,6 +58,9 @@ const difficultyVariants: Record<
 
 /**
  * Server-rendered detail page for a single problem.
+ *
+ * @param params Route params resolved by the App Router.
+ * @returns The problem detail screen, or an empty state when the API lookup fails.
  */
 export default async function ProblemPage({
   params,

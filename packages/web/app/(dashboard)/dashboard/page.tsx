@@ -1,5 +1,7 @@
 /**
  * Placeholder dashboard overview screen for the MVP shell.
+ *
+ * @returns The dashboard overview placeholder.
  */
 export default function Page() {
   return (
